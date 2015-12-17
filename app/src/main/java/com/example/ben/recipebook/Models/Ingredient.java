@@ -1,9 +1,11 @@
 package com.example.ben.recipebook.Models;
 
-public class Ingredient {
+import java.io.Serializable;
 
-    public Ingredient(String Name){
-        this.Name = Name;
+public class Ingredient implements Serializable{
+
+    public Ingredient(String name){
+        this.Name = name;
     }
 
     public final String Name;
