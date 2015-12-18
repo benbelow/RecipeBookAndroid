@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 
-import com.example.ben.recipebook.Models.Ingredient;
-import com.example.ben.recipebook.Models.Recipe;
-import com.example.ben.recipebook.Services.DataFetchingService;
-import com.example.ben.recipebook.dummy.DummyContent;
+import com.example.ben.recipebook.models.Recipe;
+import com.example.ben.recipebook.services.DataFetchingService;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;

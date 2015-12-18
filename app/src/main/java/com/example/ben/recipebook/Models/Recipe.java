@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.Models;
+package com.example.ben.recipebook.models;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,12 +1,10 @@
-package com.example.ben.recipebook.Services;
+package com.example.ben.recipebook.services;
 
-import com.example.ben.recipebook.Models.Ingredient;
+import com.example.ben.recipebook.models.Ingredient;
 
 import java.util.List;
 
-import javax.security.auth.callback.Callback;
-
-import com.example.ben.recipebook.Models.Recipe;
+import com.example.ben.recipebook.models.Recipe;
 import retrofit.Call;
 import retrofit.http.GET;
 

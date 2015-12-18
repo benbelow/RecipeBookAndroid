@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.example.ben.recipebook.models.Recipe;
 
 
 public class RecipeActivity extends ActionBarActivity {

@@ -1,11 +1,5 @@
-package com.example.ben.recipebook.Services;
+package com.example.ben.recipebook.services;
 
-import com.example.ben.recipebook.Models.Ingredient;
-
-import java.io.IOException;
-import java.util.List;
-
-import retrofit.Call;
 import retrofit.Retrofit;
 import retrofit.GsonConverterFactory;
 
