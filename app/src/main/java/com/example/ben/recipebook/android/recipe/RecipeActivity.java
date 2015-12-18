@@ -1,17 +1,21 @@
-package com.example.ben.recipebook;
+package com.example.ben.recipebook.android.recipe;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.example.ben.recipebook.models.Recipe;
+import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.models.recipe.Recipe;
 
 
 public class RecipeActivity extends ActionBarActivity {
 
+    Recipe recipe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
         setContentView(R.layout.activity_recipe);
     }
 

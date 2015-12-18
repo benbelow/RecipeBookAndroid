@@ -4,7 +4,7 @@ import com.example.ben.recipebook.models.Ingredient;
 
 import java.util.List;
 
-import com.example.ben.recipebook.models.Recipe;
+import com.example.ben.recipebook.models.recipe.Recipe;
 import retrofit.Call;
 import retrofit.http.GET;
 

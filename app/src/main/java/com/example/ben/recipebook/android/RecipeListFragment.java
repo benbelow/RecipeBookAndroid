@@ -1,6 +1,7 @@
-package com.example.ben.recipebook;
+package com.example.ben.recipebook.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 
-import com.example.ben.recipebook.models.Ingredient;
+import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.recipe.RecipeActivity;
+import com.example.ben.recipebook.models.recipe.Recipe;
 import com.example.ben.recipebook.services.DataFetchingService;
 import retrofit.Call;
 import retrofit.Callback;
@@ -19,8 +22,7 @@ import retrofit.Retrofit;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class IngredientFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class RecipeListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -28,14 +30,17 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
 
     private ListAdapter mAdapter;
 
-    private ArrayList<String> ingredientNames = new ArrayList<>();
+    //TODO: Better naming
+    private List<Recipe> allRecipes = new ArrayList<>();
 
-    public static IngredientFragment newInstance() {
-        IngredientFragment fragment = new IngredientFragment();
+    private ArrayList<String> recipeNames = new ArrayList<>();
+
+    public static RecipeListFragment newInstance() {
+        RecipeListFragment fragment = new RecipeListFragment();
         return fragment;
     }
 
-    public IngredientFragment() {
+    public RecipeListFragment() {
     }
 
     @Override
@@ -43,7 +48,7 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         super.onCreate(savedInstanceState);
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, ingredientNames);
+                android.R.layout.simple_list_item_1, recipeNames);
     }
 
     @Override
@@ -56,14 +61,15 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         DataFetchingService service = new DataFetchingService();
-        Call<List<Ingredient>> call = service.service.listIngredients();
+        Call<List<Recipe>> call = service.service.listRecipes();
 
-        call.enqueue(new Callback<List<Ingredient>>() {
+        call.enqueue(new Callback<List<Recipe>>() {
             @Override
-            public void onResponse(Response<List<Ingredient>> response, Retrofit retrofit) {
-                List<Ingredient> ingredients = response.body();
-                for(Ingredient i : ingredients){
-                    ingredientNames.add(i.Name);
+            public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
+                List<Recipe> recipes = response.body();
+                allRecipes.addAll(recipes);
+                for(Recipe r : recipes){
+                    recipeNames.add(r.Name);
                 }
                 ((BaseAdapter)mAdapter).notifyDataSetChanged();
             }
@@ -101,9 +107,9 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-//            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
+            recipeIntent.putExtra("Recipe", allRecipes.get(position));
+            startActivity(recipeIntent);
         }
     }
 
