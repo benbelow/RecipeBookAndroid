@@ -12,11 +12,17 @@ import butterknife.ButterKnife;
 
 public class RecipeIngredientViewHolder extends ViewHolder{
 
+    @Bind(R.id.recipe_ingredient_amount)
+    TextView amountView;
+
+    @Bind(R.id.recipe_ingredient_units)
+    TextView unitsView;
+
     @Bind(R.id.recipe_ingredient_name)
-    TextView recipe_ingredient_name;
+    TextView nameView;
 
     public RecipeIngredientViewHolder(Ingredient ingredient, LayoutInflater inflater){
-        super(inflater.inflate(R.layout.template_recipe_ingredient_name, null));
+        super(inflater.inflate(R.layout.template_recipe_ingredient, null));
         ButterKnife.bind(this, getView());
         updateContent(ingredient);
     }
@@ -25,6 +31,8 @@ public class RecipeIngredientViewHolder extends ViewHolder{
     public void updateContent(Object item) {
         Ingredient ingredient = (Ingredient) item;
 
-        recipe_ingredient_name.setText(ingredient.Name);
+        amountView.setText(Integer.toString(ingredient.Amount));
+        unitsView.setText(ingredient.Units);
+        nameView.setText(ingredient.Name);
     }
 }
