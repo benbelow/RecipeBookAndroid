@@ -23,6 +23,6 @@ public class RecipeAuthorViewHolder extends ViewHolder {
     @Override
     public void updateContent(Object item) {
         String author = (String) item;
-        authorView.setText(author);
+        authorView.setText("By " + author);
     }
 }

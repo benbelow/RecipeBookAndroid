@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Instruction implements Serializable {
 
-    public final int stepNumber;
-    public final String stepDescription;
+    public final int StepNumber;
+    public final String StepDescription;
 
     public Instruction(int stepNumber, String stepDescription) {
-        this.stepNumber = stepNumber;
-        this.stepDescription = stepDescription;
+        this.StepNumber = stepNumber;
+        this.StepDescription = stepDescription;
     }
 }

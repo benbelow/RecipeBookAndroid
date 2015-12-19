@@ -13,11 +13,8 @@ import butterknife.ButterKnife;
 
 public class RecipeTimingsViewHolder extends ViewHolder {
 
-    @Bind(R.id.recipe_prep_time)
-    TextView prepTimeView;
-
-    @Bind(R.id.recipe_cook_time)
-    TextView cookTimeView;
+    @Bind(R.id.recipe_total_time)
+    TextView totalTimeView;
 
     public RecipeTimingsViewHolder(RecipeTimings recipeTimings, LayoutInflater inflater) {
         super(inflater.inflate(R.layout.template_recipe_timings, null));
@@ -29,7 +26,14 @@ public class RecipeTimingsViewHolder extends ViewHolder {
     public void updateContent(Object item) {
         RecipeTimings recipeTimings = (RecipeTimings) item;
 
-        prepTimeView.setText(Integer.toString(recipeTimings.prepTime));
-        cookTimeView.setText(Integer.toString(recipeTimings.cookTime));
+        //ToDo extract timeformatter class
+        int totalMinutes = recipeTimings.prepTime + recipeTimings.cookTime;
+        int hours = totalMinutes / 60;
+        int minutes = totalMinutes % 60;
+
+        String displayedHours = hours > 0 ? hours + "hr " : "";
+        String displayedMinutes = minutes + "min";
+
+        totalTimeView.setText(displayedHours + displayedMinutes);
     }
 }

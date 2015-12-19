@@ -26,6 +26,6 @@ public class RecipeInstructionViewHolder extends ViewHolder {
     public void updateContent(Object item) {
         Instruction instruction = (Instruction) item;
 
-        instructionView.setText(instruction.stepDescription);
+        instructionView.setText(instruction.StepDescription);
     }
 }
