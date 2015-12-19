@@ -15,12 +15,12 @@ public class RecipeAdapter extends BaseAdapter {
 
     private RecipeViewHolderMapping recipeViewHolderMapping;
 
+    private Context context;
+
+    @Inject
     public RecipeAdapter(Context context){
         this.context = context;
     }
-
-    @Inject
-    private Context context;
 
     public void setRecipe(Recipe recipe){
         recipeViewHolderMapping = new RecipeViewHolderMapping(recipe, new ViewHolderFactory(context));

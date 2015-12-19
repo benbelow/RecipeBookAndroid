@@ -4,6 +4,7 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
+import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,8 +18,7 @@ public class AppContextModule {
     }
 
     @Provides
-    @Singleton
-    Context provideApplicationContext() {
+    public Context provideApplicationContext() {
         return context;
     }
 

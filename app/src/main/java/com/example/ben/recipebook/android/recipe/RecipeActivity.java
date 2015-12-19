@@ -7,7 +7,11 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.AppContextComponent;
+import com.example.ben.recipebook.android.RecipeApplication;
 import com.example.ben.recipebook.models.recipe.Recipe;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,19 +21,23 @@ public class RecipeActivity extends ActionBarActivity {
 
     Recipe recipe;
 
+    @Inject
     RecipeAdapter recipeAdapter;
 
     @Bind(R.id.recipe_items)
     ListView recipeItems;
+
+    private AppContextComponent appContextComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
-        recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
 
-        recipeAdapter = new RecipeAdapter(this.getApplicationContext());
+        ((RecipeApplication) getApplication()).getAppContextComponent().inject(this);
+
+        recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
 
         recipeAdapter.setRecipe(recipe);
 
