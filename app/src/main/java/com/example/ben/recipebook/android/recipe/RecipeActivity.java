@@ -1,18 +1,40 @@
-package com.example.ben.recipebook;
+package com.example.ben.recipebook.android.recipe;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.example.ben.recipebook.models.Recipe;
+import android.widget.ListView;
+
+import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.models.recipe.Recipe;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class RecipeActivity extends ActionBarActivity {
+
+    Recipe recipe;
+
+    RecipeAdapter recipeAdapter;
+
+    @Bind(R.id.recipe_items)
+    ListView recipeItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+        ButterKnife.bind(this);
+        recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
+
+        recipeAdapter = new RecipeAdapter(this.getApplicationContext());
+
+        recipeAdapter.setRecipe(recipe);
+
+        recipeItems.setAdapter(recipeAdapter);
+
     }
 
 
