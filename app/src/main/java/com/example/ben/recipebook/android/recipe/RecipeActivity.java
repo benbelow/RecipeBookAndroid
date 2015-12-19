@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.ben.recipebook.R;
-import com.example.ben.recipebook.android.AppContextComponent;
+import com.example.ben.recipebook.android.dagger.ApplicationComponent;
 import com.example.ben.recipebook.android.RecipeApplication;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
@@ -27,7 +27,7 @@ public class RecipeActivity extends ActionBarActivity {
     @Bind(R.id.recipe_items)
     ListView recipeItems;
 
-    private AppContextComponent appContextComponent;
+    private ApplicationComponent applicationComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class RecipeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
 
-        ((RecipeApplication) getApplication()).getAppContextComponent().inject(this);
+        ((RecipeApplication) getApplication()).getApplicationComponent().inject(this);
 
         recipe = (Recipe) getIntent().getExtras().getSerializable("Recipe");
 

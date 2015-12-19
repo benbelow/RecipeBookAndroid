@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.android;
+package com.example.ben.recipebook.android.dagger;
 
 import android.content.Context;
 
@@ -9,11 +9,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class AppContextModule {
+public class ApplicationModule {
 
     private final Context context;
 
-    public AppContextModule(Context context){
+    public ApplicationModule(Context context){
         this.context = context;
     }
 

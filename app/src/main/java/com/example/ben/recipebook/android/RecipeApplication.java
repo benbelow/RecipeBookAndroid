@@ -2,18 +2,21 @@ package com.example.ben.recipebook.android;
 
 import android.app.Application;
 
+import com.example.ben.recipebook.android.dagger.ApplicationComponent;
+import com.example.ben.recipebook.android.dagger.ApplicationModule;
+
 public class RecipeApplication extends Application{
 
-    private AppContextComponent appContextComponent;
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate(){
         super.onCreate();
-        appContextComponent = DaggerAppContextComponent.builder().appContextModule(new AppContextModule(this)).build();
+        applicationComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
     }
 
-    public AppContextComponent getAppContextComponent(){
-        return appContextComponent;
+    public ApplicationComponent getApplicationComponent(){
+        return applicationComponent;
     }
 
 }
