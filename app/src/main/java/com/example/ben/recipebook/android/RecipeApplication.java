@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.ben.recipebook.android.dagger.ApplicationComponent;
 import com.example.ben.recipebook.android.dagger.ApplicationModule;
+import com.example.ben.recipebook.android.dagger.DaggerApplicationComponent;
 
 public class RecipeApplication extends Application{
 
