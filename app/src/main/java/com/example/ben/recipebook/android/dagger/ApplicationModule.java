@@ -1,6 +1,7 @@
 package com.example.ben.recipebook.android.dagger;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 
 import javax.inject.Singleton;
 
@@ -21,6 +22,12 @@ public class ApplicationModule {
     public Context provideApplicationContext() {
         return context;
     }
+
+    @Provides
+    public LayoutInflater provideLayoutInflater(){
+        return LayoutInflater.from(context);
+    }
+
 
 }
 

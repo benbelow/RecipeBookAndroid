@@ -11,15 +11,12 @@ import javax.inject.Inject;
 
 public class ViewHolderFactory {
 
-    @Inject
-    public ViewHolderFactory(Context context){
-        this.context = context;
-        this.inflater = LayoutInflater.from(context);
-    }
-
-    private Context context;
-
     private LayoutInflater inflater;
+
+    @Inject
+    public ViewHolderFactory(LayoutInflater inflater){
+        this.inflater = inflater;
+    }
 
     public <T> T buildViewHolder(Class<T> klass, Object content){
         if(RecipeNameViewHolder.class.isAssignableFrom(klass)){

@@ -27,8 +27,6 @@ public class RecipeActivity extends ActionBarActivity {
     @Bind(R.id.recipe_items)
     ListView recipeItems;
 
-    private ApplicationComponent applicationComponent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +40,6 @@ public class RecipeActivity extends ActionBarActivity {
         recipeAdapter.setRecipe(recipe);
 
         recipeItems.setAdapter(recipeAdapter);
-
     }
 
 

@@ -1,6 +1,5 @@
 package com.example.ben.recipebook.android.recipe;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,15 +14,15 @@ public class RecipeAdapter extends BaseAdapter {
 
     private RecipeViewHolderMapping recipeViewHolderMapping;
 
-    private Context context;
+    private ViewHolderFactory viewHolderFactory;
 
     @Inject
-    public RecipeAdapter(Context context){
-        this.context = context;
+    public RecipeAdapter(ViewHolderFactory viewHolderFactory){
+        this.viewHolderFactory = viewHolderFactory;
     }
 
     public void setRecipe(Recipe recipe){
-        recipeViewHolderMapping = new RecipeViewHolderMapping(recipe, new ViewHolderFactory(context));
+        recipeViewHolderMapping = new RecipeViewHolderMapping(recipe, viewHolderFactory);
     }
 
     @Override
