@@ -6,6 +6,7 @@ import android.widget.BaseAdapter;
 
 import com.example.ben.recipebook.android.ViewHolder;
 import com.example.ben.recipebook.android.ViewHolderFactory;
+import com.example.ben.recipebook.android.recipe.viewholders.RecipeViewHolderMapping;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
 import javax.inject.Inject;

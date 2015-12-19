@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.android.recipe;
+package com.example.ben.recipebook.android.recipe.viewholders;
 
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -22,8 +22,8 @@ public class RecipeNameViewHolder extends ViewHolder {
     }
 
     @Override
-    public void updateContent(Object nameObject) {
-        String name = (String) nameObject;
+    public void updateContent(Object item) {
+        String name = (String) item;
 
         nameView.setText(name);
     }

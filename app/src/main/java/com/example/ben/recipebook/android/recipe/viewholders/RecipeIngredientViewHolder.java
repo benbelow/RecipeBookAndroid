@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.android.recipe;
+package com.example.ben.recipebook.android.recipe.viewholders;
 
 import android.view.LayoutInflater;
 import android.widget.TextView;
