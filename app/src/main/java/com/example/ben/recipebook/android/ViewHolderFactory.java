@@ -2,8 +2,11 @@ package com.example.ben.recipebook.android;
 
 import android.view.LayoutInflater;
 
+import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeAuthorViewHolder;
+import com.example.ben.recipebook.android.recipe.viewholders.RecipeEquipmentListViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeEquipmentViewHolder;
+import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientsListViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeInstructionViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeMealtypeViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeServingsViewHolder;
@@ -14,6 +17,8 @@ import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientVie
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeNameViewHolder;
 import com.example.ben.recipebook.models.recipe.Instruction;
 import com.example.ben.recipebook.models.recipe.RecipeTimings;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,14 +35,14 @@ public class ViewHolderFactory {
         if(RecipeNameViewHolder.class.isAssignableFrom(klass)){
             return (T) buildTitleViewHolder((String) content); 
         }
-        else if(RecipeIngredientViewHolder.class.isAssignableFrom(klass)){
-            return (T) buildRecipeIngredientViewHolder((Ingredient) content);
+        else if(RecipeIngredientsListViewHolder.class.isAssignableFrom(klass)){
+            return (T) buildRecipeIngredientsListViewHolder((List<Ingredient>) content);
         }
         else if(RecipeAuthorViewHolder.class.isAssignableFrom(klass)){
             return (T) buildRecipeAuthorViewHolder((String) content);
         }
-        else if(RecipeEquipmentViewHolder.class.isAssignableFrom(klass)){
-            return (T) buildRecipeEquipmentViewHolder((Equipment) content);
+        else if(RecipeEquipmentListViewHolder.class.isAssignableFrom(klass)){
+            return (T) buildRecipeEquipmentListViewHolder((List<Equipment>) content);
         }
         else if(RecipeInstructionViewHolder.class.isAssignableFrom(klass)){
             return (T) buildRecipeInstructionViewHolder((Instruction) content);
@@ -56,6 +61,10 @@ public class ViewHolderFactory {
         }
     }
 
+    private RecipeIngredientsListViewHolder buildRecipeIngredientsListViewHolder(List<Ingredient> ingredients) {
+        return new RecipeIngredientsListViewHolder(ingredients, inflater);
+    }
+
     private RecipeTimingsViewHolder buildRecipeTimingsViewHolder(RecipeTimings timings) {
         return new RecipeTimingsViewHolder(timings, inflater);
     }
@@ -72,8 +81,8 @@ public class ViewHolderFactory {
         return new RecipeInstructionViewHolder(instruction, inflater);
     }
 
-    private RecipeEquipmentViewHolder buildRecipeEquipmentViewHolder(Equipment equipment) {
-        return new RecipeEquipmentViewHolder(equipment, inflater);
+    private RecipeEquipmentListViewHolder buildRecipeEquipmentListViewHolder(List<Equipment> equipment) {
+        return new RecipeEquipmentListViewHolder(equipment, inflater);
     }
 
     private RecipeAuthorViewHolder buildRecipeAuthorViewHolder(String author) {
@@ -82,10 +91,6 @@ public class ViewHolderFactory {
 
     private RecipeNameViewHolder buildTitleViewHolder(String title) {
         return new RecipeNameViewHolder(title, inflater);
-    }
-
-    private RecipeIngredientViewHolder buildRecipeIngredientViewHolder(Ingredient ingredient) {
-        return new RecipeIngredientViewHolder(ingredient, inflater);
     }
 
 }

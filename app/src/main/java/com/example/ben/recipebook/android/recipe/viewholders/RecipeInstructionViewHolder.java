@@ -16,6 +16,9 @@ public class RecipeInstructionViewHolder extends ViewHolder {
     @Bind(R.id.recipe_instruction)
     TextView instructionView;
 
+    @Bind(R.id.recipe_instruction_number)
+    TextView instructionNumberView;
+
     public RecipeInstructionViewHolder(Instruction instruction, LayoutInflater inflater) {
         super(inflater.inflate(R.layout.template_recipe_instruction, null));
         ButterKnife.bind(this, getView());
@@ -27,5 +30,6 @@ public class RecipeInstructionViewHolder extends ViewHolder {
         Instruction instruction = (Instruction) item;
 
         instructionView.setText(instruction.StepDescription);
+        instructionNumberView.setText(instruction.StepNumber + ".");
     }
 }

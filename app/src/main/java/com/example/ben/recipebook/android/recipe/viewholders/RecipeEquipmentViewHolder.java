@@ -1,6 +1,7 @@
 package com.example.ben.recipebook.android.recipe.viewholders;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
@@ -15,8 +16,8 @@ public class RecipeEquipmentViewHolder extends ViewHolder {
     @Bind(R.id.recipe_equipment_name)
     TextView equipmentView;
 
-    public RecipeEquipmentViewHolder(Equipment equipment, LayoutInflater inflater){
-        super(inflater.inflate(R.layout.template_recipe_equipment, null));
+    public RecipeEquipmentViewHolder(Equipment equipment, View view){
+        super(view);
         ButterKnife.bind(this, getView());
         updateContent(equipment);
     }

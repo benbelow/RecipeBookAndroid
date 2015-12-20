@@ -1,6 +1,7 @@
 package com.example.ben.recipebook.android.recipe.viewholders;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.ben.recipebook.models.Ingredient;
@@ -21,10 +22,9 @@ public class RecipeIngredientViewHolder extends ViewHolder{
     @Bind(R.id.recipe_ingredient_name)
     TextView nameView;
 
-    public RecipeIngredientViewHolder(Ingredient ingredient, LayoutInflater inflater){
-        super(inflater.inflate(R.layout.template_recipe_ingredient, null));
+    public RecipeIngredientViewHolder(Ingredient ingredient, View view){
+        super(view);
         ButterKnife.bind(this, getView());
-        updateContent(ingredient);
     }
 
     @Override
@@ -34,5 +34,9 @@ public class RecipeIngredientViewHolder extends ViewHolder{
         amountView.setText(Integer.toString(ingredient.Amount));
         unitsView.setText(ingredient.Units);
         nameView.setText(ingredient.Name);
+
+        if(ingredient.Units == ""){
+            unitsView.setVisibility(View.GONE);
+        }
     }
 }

@@ -61,13 +61,12 @@ public class RecipeViewHolderMapping {
         RecipeTimings timings = new RecipeTimings(recipe.PreparationTime, recipe.CookTime);
         recipeViewHolderPairs.add(new MappingPair(RecipeTimingsViewHolder.class, timings));
 
-        for(Ingredient ingredient : recipe.Ingredients){
-            recipeViewHolderPairs.add(new MappingPair(RecipeIngredientViewHolder.class, ingredient));
-        }
+        recipeViewHolderPairs.add(new MappingPair(RecipeIngredientsListViewHolder.class, recipe.Ingredients));
+        recipeViewHolderPairs.add(new MappingPair(RecipeEquipmentListViewHolder.class, recipe.Equipment));
 
-        for(Equipment equipment : recipe.Equipment){
-            recipeViewHolderPairs.add(new MappingPair(RecipeEquipmentViewHolder.class, equipment));
-        }
+//        for(int i = 0; i < 20; i++){
+//            recipeViewHolderPairs.add(new MappingPair(RecipeNameViewHolder.class, "Filler!"));
+//        }
 
         for(Instruction instruction : recipe.Instructions){
             recipeViewHolderPairs.add(new MappingPair(RecipeInstructionViewHolder.class, instruction));

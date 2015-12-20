@@ -1,0 +1,101 @@
+package com.example.ben.recipebook.android;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+
+import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.recipe.RecipeActivity;
+import com.example.ben.recipebook.models.recipe.Recipe;
+import com.example.ben.recipebook.services.DataFetchingService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
+public class RecipeSearchFragment extends Fragment{
+
+    @Bind(R.id.recipe_search_name)
+    EditText nameSearch;
+
+    @Bind(R.id.recipe_search_button)
+    ImageButton searchButton;
+
+    public static RecipeSearchFragment newInstance() {
+        RecipeSearchFragment fragment = new RecipeSearchFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recipe_search, container, false);
+        ButterKnife.bind(this, view);
+
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DataFetchingService service = new DataFetchingService();
+                Map<String, String> searchParams = new HashMap<String, String>();
+                searchParams.put("name", nameSearch.getText().toString());
+                searchParams.put("limit", "1");
+                Call<List<Recipe>> call = service.service.listRecipes(searchParams);
+
+                call.enqueue(new Callback<List<Recipe>>() {
+                    @Override
+                    public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
+                        List<Recipe> recipes = response.body();
+
+                        if(recipes.size() > 0) {
+                            Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
+                            recipeIntent.putExtra("Recipe", recipes.get(0));
+                            startActivity(recipeIntent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+        return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+
+}

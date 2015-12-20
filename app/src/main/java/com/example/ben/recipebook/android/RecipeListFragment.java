@@ -21,6 +21,7 @@ import retrofit.Retrofit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RecipeListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
@@ -61,7 +62,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         DataFetchingService service = new DataFetchingService();
-        Call<List<Recipe>> call = service.service.listRecipes();
+        Call<List<Recipe>> call = service.service.listRecipes(null);
 
         call.enqueue(new Callback<List<Recipe>>() {
             @Override

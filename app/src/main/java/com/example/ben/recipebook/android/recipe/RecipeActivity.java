@@ -2,8 +2,10 @@ package com.example.ben.recipebook.android.recipe;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.ben.recipebook.R;
@@ -42,7 +44,6 @@ public class RecipeActivity extends ActionBarActivity {
 
         recipeItems.setAdapter(recipeAdapter);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
