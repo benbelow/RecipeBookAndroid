@@ -65,9 +65,12 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
 
-        allRecipes = (List<Recipe>) this.getArguments().getSerializable("recipes");
-        for(Recipe r : allRecipes){
-            recipeNames.add(r.Name);
+        Bundle bundle = this.getArguments();
+
+        if(bundle != null)
+            allRecipes = (List<Recipe>) this.getArguments().getSerializable("recipes");
+            for(Recipe r : allRecipes){
+                recipeNames.add(r.Name);
         }
 
         // Set the adapter

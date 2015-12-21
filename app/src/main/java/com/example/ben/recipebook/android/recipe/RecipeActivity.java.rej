@@ -1,9 +1,0 @@
-diff a/app/src/main/java/com/example/ben/recipebook/android/recipe/RecipeActivity.java b/app/src/main/java/com/example/ben/recipebook/android/recipe/RecipeActivity.java	(rejected hunks)
-@@ -32,7 +32,6 @@
-     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
-         setContentView(R.layout.activity_recipe);
--        ButterKnife.bind(this);
- 
-         ((RecipeApplication) getApplication()).getApplicationComponent().inject(this);
- 

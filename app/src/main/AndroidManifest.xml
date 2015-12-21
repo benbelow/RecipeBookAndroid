@@ -27,6 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".android.MainActivity" />
         </activity>
+        <activity
+            android:name=".android.RecipeSearchResultsActivity"
+            android:label="@string/title_activity_recipe_search_results" >
+        </activity>
     </application>
 
 </manifest>

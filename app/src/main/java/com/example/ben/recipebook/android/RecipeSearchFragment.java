@@ -26,6 +26,7 @@ import com.example.ben.recipebook.models.recipe.Recipe;
 import com.example.ben.recipebook.services.DataFetchingService;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,11 +109,9 @@ public class RecipeSearchFragment extends Fragment{
                         List<Recipe> recipes = response.body();
 
                         if (recipes.size() > 0) {
-
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                            fragmentTransaction.replace(R.id.container, RecipeListFragment.newInstance(recipes)).commit();
+                            Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
+                            recipeSearchResultsIntent.putExtra("recipes", (Serializable) recipes);
+                            startActivity(recipeSearchResultsIntent);
                         }
                     }
 
