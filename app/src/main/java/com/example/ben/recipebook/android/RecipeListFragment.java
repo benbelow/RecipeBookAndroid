@@ -19,6 +19,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     private AbsListView mListView;
 
-    private ListAdapter mAdapter;
+    private ArrayAdapter mAdapter;
 
     //TODO: Better naming
     private List<Recipe> allRecipes = new ArrayList<>();
@@ -38,6 +39,14 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     public static RecipeListFragment newInstance() {
         RecipeListFragment fragment = new RecipeListFragment();
+        return fragment;
+    }
+
+    public static RecipeListFragment newInstance(List<Recipe> recipes){
+        RecipeListFragment fragment = new RecipeListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("recipes", (Serializable) recipes);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -56,33 +65,18 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
 
+        allRecipes = (List<Recipe>) this.getArguments().getSerializable("recipes");
+        for(Recipe r : allRecipes){
+            recipeNames.add(r.Name);
+        }
+
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        DataFetchingService service = new DataFetchingService();
-        Call<List<Recipe>> call = service.service.listRecipes(null, null, null, null);
-
-        call.enqueue(new Callback<List<Recipe>>() {
-            @Override
-            public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
-                List<Recipe> recipes = response.body();
-                allRecipes.addAll(recipes);
-                for(Recipe r : recipes){
-                    recipeNames.add(r.Name);
-                }
-                ((BaseAdapter)mAdapter).notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
-
         return view;
     }
 
@@ -102,7 +96,6 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         super.onDetach();
         mListener = null;
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

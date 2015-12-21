@@ -99,7 +99,7 @@ public class RecipeSearchFragment extends Fragment{
                     }
                 }
 
-                searchParams.put("limit", "1");
+                searchParams.put("limit", "100");
                 Call<List<Recipe>> call = service.service.listRecipes(searchParams, ingredientsAny, ingredientsAll, null);
 
                 call.enqueue(new Callback<List<Recipe>>() {
@@ -112,7 +112,7 @@ public class RecipeSearchFragment extends Fragment{
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                            fragmentTransaction.replace(R.id.container, RecipeSearchResultsFragment.newInstance(recipes)).commit();
+                            fragmentTransaction.replace(R.id.container, RecipeListFragment.newInstance(recipes)).commit();
                         }
                     }
 
