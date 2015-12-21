@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.ToggleButton;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
@@ -36,18 +40,20 @@ import retrofit.Retrofit;
 
 public class RecipeSearchFragment extends Fragment{
 
+    private LayoutInflater inflater;
+
     @Bind(R.id.recipe_search_name)
     EditText nameSearch;
-
-    @Bind(R.id.recipe_search_ingredient)
-    AutoCompleteTextView ingredientSearch;
 
     @Bind(R.id.recipe_search_button)
     ImageButton searchButton;
 
-    private ArrayList<String> ingredientNames = new ArrayList<>();
+    @Bind(R.id.add_search_ingredient)
+    ImageButton addSearchIngredientButton;
 
-    private ArrayAdapter<String> mAdapter;
+    @Bind(R.id.recipe_search_ingredient_list)
+    LinearLayout ingredientList;
+
 
     public static RecipeSearchFragment newInstance() {
         RecipeSearchFragment fragment = new RecipeSearchFragment();
@@ -60,13 +66,11 @@ public class RecipeSearchFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_search, container, false);
         ButterKnife.bind(this, view);
-
-
-        setUpIngredientDropDown();
+        this.inflater = inflater;
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,20 +78,29 @@ public class RecipeSearchFragment extends Fragment{
 
                 DataFetchingService service = new DataFetchingService();
                 Map<String, String> searchParams = new HashMap<String, String>();
-                if(!nameSearch.getText().toString().isEmpty()) {
+                if (!nameSearch.getText().toString().isEmpty()) {
                     searchParams.put("name", nameSearch.getText().toString());
                 }
 
-                List<String> ingredientsAny = new ArrayList<String>();
-                if(!ingredientSearch.getText().toString().isEmpty()) {
-                    ingredientsAny.add(ingredientSearch.getText().toString());
-                }
-                for(String ingredientName : ingredientsAny){
-                    searchParams.put("ingredientsAny", ingredientName);
+                List<String> ingredientsAny = new ArrayList();
+                List<String> ingredientsAll = new ArrayList();
+
+                for(int i=0; i < ingredientList.getChildCount(); i++){
+                    View view = ingredientList.getChildAt(i);
+                    if(view instanceof LinearLayout){
+                        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.recipe_search_ingredient);
+                        ToggleButton requiredButton = (ToggleButton) view.findViewById(R.id.recipe_ingredient_required);
+
+                        if(requiredButton.isChecked()){
+                            ingredientsAll.add((textView).getText().toString());
+                        } else{
+                            ingredientsAny.add((textView).getText().toString());
+                        }
+                    }
                 }
 
                 searchParams.put("limit", "1");
-                Call<List<Recipe>> call = service.service.listRecipes(searchParams);
+                Call<List<Recipe>> call = service.service.listRecipes(searchParams, ingredientsAny, ingredientsAll, null);
 
                 call.enqueue(new Callback<List<Recipe>>() {
                     @Override
@@ -95,9 +108,11 @@ public class RecipeSearchFragment extends Fragment{
                         List<Recipe> recipes = response.body();
 
                         if (recipes.size() > 0) {
-                            Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
-                            recipeIntent.putExtra("Recipe", recipes.get(0));
-                            startActivity(recipeIntent);
+
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                            fragmentTransaction.replace(R.id.container, RecipeSearchResultsFragment.newInstance(recipes)).commit();
                         }
                     }
 
@@ -109,15 +124,32 @@ public class RecipeSearchFragment extends Fragment{
 
             }
         });
+
+        addSearchIngredientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout newIngredient = (LinearLayout)inflater.inflate(R.layout.template_ingredient_search, null);
+
+                AutoCompleteTextView view = (AutoCompleteTextView)newIngredient.findViewById(R.id.recipe_search_ingredient);
+
+                setUpIngredientDropDown(view);
+
+                ingredientList.addView(newIngredient, 1);
+
+                newIngredient.requestFocus();
+            }
+        });
+
         return view;
     }
 
-    private void setUpIngredientDropDown(){
-        DataFetchingService service = new DataFetchingService();
+    private void setUpIngredientDropDown(final AutoCompleteTextView ingredientSearchView){
+        final DataFetchingService service = new DataFetchingService();
         Call<List<Ingredient>> call = service.service.listIngredients();
 
+        final ArrayList<String> ingredientNames = new ArrayList<>();
 
-        mAdapter = new ArrayAdapter<String>(this.getActivity(),
+        final ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_dropdown_item_1line, ingredientNames);
 
         call.enqueue(new Callback<List<Ingredient>>() {
@@ -127,9 +159,9 @@ public class RecipeSearchFragment extends Fragment{
                 for(Ingredient i : ingredients){
                     ingredientNames.add(i.Name);
                 }
-                ((BaseAdapter)mAdapter).notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 
-                ingredientSearch.setAdapter(mAdapter);
+                ingredientSearchView.setAdapter(mAdapter);
             }
 
             @Override

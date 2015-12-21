@@ -48,8 +48,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, recipeNames);
+        mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, recipeNames);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         DataFetchingService service = new DataFetchingService();
-        Call<List<Recipe>> call = service.service.listRecipes(null);
+        Call<List<Recipe>> call = service.service.listRecipes(null, null, null, null);
 
         call.enqueue(new Callback<List<Recipe>>() {
             @Override

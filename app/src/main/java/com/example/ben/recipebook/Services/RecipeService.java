@@ -16,8 +16,13 @@ public interface RecipeService {
     @GET("/api/ingredients")
     Call<List<Ingredient>> listIngredients();
 
+
+    //ToDo: See if there's a nicer way to avoid passing in nulls, c.f. default values or a better Map
     @GET("/api/recipes")
     Call<List<Recipe>> listRecipes(
-            @QueryMap Map<String, String> options);
+            @QueryMap Map<String, String> options,
+            @Query("ingredientsAny") List<String> ingredientsAny,
+            @Query("ingredientsAll") List<String> ingredientsAll,
+            @Query("equipment") List<String> equipment);
 
 }
