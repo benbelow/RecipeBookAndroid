@@ -64,10 +64,13 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
             @Override
             public void onResponse(Response<List<Ingredient>> response, Retrofit retrofit) {
                 List<Ingredient> ingredients = response.body();
-                for(Ingredient i : ingredients){
-                    ingredientNames.add(i.Name);
+
+                if(response.isSuccess()) {
+                    for (Ingredient i : ingredients) {
+                        ingredientNames.add(i.Name);
+                    }
+                    ((BaseAdapter) mAdapter).notifyDataSetChanged();
                 }
-                ((BaseAdapter)mAdapter).notifyDataSetChanged();
             }
 
             @Override

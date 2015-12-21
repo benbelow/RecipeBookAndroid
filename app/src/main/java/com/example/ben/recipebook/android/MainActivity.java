@@ -69,8 +69,10 @@ public class MainActivity extends ActionBarActivity
                     @Override
                     public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
                         List<Recipe> recipes = response.body();
-                        recipes.addAll(recipes);
-                        fragmentTransaction.replace(R.id.container, RecipeListFragment.newInstance(recipes)).commit();
+                        if(response.isSuccess()) {
+                            recipes.addAll(recipes);
+                            fragmentTransaction.replace(R.id.container, RecipeListFragment.newInstance(recipes)).commit();
+                        }
                     }
 
                     @Override

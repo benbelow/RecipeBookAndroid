@@ -108,10 +108,12 @@ public class RecipeSearchFragment extends Fragment{
                     public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
                         List<Recipe> recipes = response.body();
 
-                        if (recipes.size() > 0) {
-                            Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
-                            recipeSearchResultsIntent.putExtra("recipes", (Serializable) recipes);
-                            startActivity(recipeSearchResultsIntent);
+                        if(response.isSuccess()) {
+                            if (recipes.size() > 0) {
+                                Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
+                                recipeSearchResultsIntent.putExtra("recipes", (Serializable) recipes);
+                                startActivity(recipeSearchResultsIntent);
+                            }
                         }
                     }
 
