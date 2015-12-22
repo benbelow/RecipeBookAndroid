@@ -7,7 +7,7 @@ import retrofit.GsonConverterFactory;
 public class DataFetchingService {
 
     //ToDo: Make a config file
-    private String baseUrl = "http://f4a8fbf8.ngrok.io/";
+    private String baseUrl = "http://52.35.36.23/";
 
     public DataFetchingService() {
         Retrofit retrofit = new Retrofit.Builder()
