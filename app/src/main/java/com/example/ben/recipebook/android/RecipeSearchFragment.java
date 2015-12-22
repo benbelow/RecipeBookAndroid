@@ -4,28 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ToggleButton;
 
 import com.example.ben.recipebook.R;
-import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.recipe.Recipe;
 import com.example.ben.recipebook.services.DataFetchingService;
-import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -68,17 +60,21 @@ public class RecipeSearchFragment extends Fragment{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_search, container, false);
         ButterKnife.bind(this, view);
         this.inflater = inflater;
 
+        setUpSearchButton();
+
+        setUpAddIngredientButton();
+
+        setUpAddEquipmentButton();
+
+        return view;
+    }
+
+    private void setUpSearchButton() {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,23 +89,17 @@ public class RecipeSearchFragment extends Fragment{
                 List<String> ingredientsAll = new ArrayList();
                 List<String> equipment = new ArrayList();
 
-                for(int i=0; i < ingredientList.getChildCount(); i++){
+                for (int i = 0; i < ingredientList.getChildCount(); i++) {
                     View view = ingredientList.getChildAt(i);
-                    if(view instanceof LinearLayout){
+                    if (view instanceof LinearLayout) {
                         AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.recipe_search_ingredient);
-                        ToggleButton requiredButton = (ToggleButton) view.findViewById(R.id.recipe_ingredient_required);
-
-                        if(requiredButton.isChecked()){
-                            ingredientsAll.add(textView.getText().toString());
-                        } else{
-                            ingredientsAny.add(textView.getText().toString());
-                        }
+                        ingredientsAll.add(textView.getText().toString());
                     }
                 }
 
-                for(int i=0; i < equipmentList.getChildCount(); i++){
+                for (int i = 0; i < equipmentList.getChildCount(); i++) {
                     View view = equipmentList.getChildAt(i);
-                    if(view instanceof LinearLayout){
+                    if (view instanceof LinearLayout) {
                         AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.recipe_search_equipment);
                         equipment.add(textView.getText().toString());
                     }
@@ -123,7 +113,7 @@ public class RecipeSearchFragment extends Fragment{
                     public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
                         List<Recipe> recipes = response.body();
 
-                        if(response.isSuccess()) {
+                        if (response.isSuccess()) {
                             if (recipes.size() > 0) {
                                 Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
                                 recipeSearchResultsIntent.putExtra("recipes", (Serializable) recipes);
@@ -140,26 +130,14 @@ public class RecipeSearchFragment extends Fragment{
 
             }
         });
+    }
 
-        addSearchIngredientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout newIngredient = (LinearLayout) inflater.inflate(R.layout.template_ingredient_search, null);
-
-                AutoCompleteTextView view = (AutoCompleteTextView) newIngredient.findViewById(R.id.recipe_search_ingredient);
-
-                setUpIngredientDropDown(view);
-
-                ingredientList.addView(newIngredient, 1);
-
-                newIngredient.requestFocus();
-            }
-        });
+    private void setUpAddEquipmentButton() {
 
         addSearchEquipmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout newEquipment = (LinearLayout) inflater.inflate(R.layout.template_equipment_search, null);
+                final LinearLayout newEquipment = (LinearLayout) inflater.inflate(R.layout.template_equipment_search, null);
 
                 AutoCompleteTextView view = (AutoCompleteTextView) newEquipment.findViewById(R.id.recipe_search_equipment);
 
@@ -168,10 +146,44 @@ public class RecipeSearchFragment extends Fragment{
                 equipmentList.addView(newEquipment, 1);
 
                 newEquipment.requestFocus();
+
+                ImageButton removeButton = (ImageButton) newEquipment.findViewById(R.id.remove_search_equipment);
+                removeButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        equipmentList.removeView(newEquipment);
+                    }
+                });
             }
         });
+    }
 
-        return view;
+    private void setUpAddIngredientButton() {
+        addSearchIngredientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final LinearLayout newIngredient = (LinearLayout) inflater.inflate(R.layout.template_ingredient_search, null);
+
+                AutoCompleteTextView view = (AutoCompleteTextView) newIngredient.findViewById(R.id.recipe_search_ingredient);
+
+                setUpIngredientDropDown(view);
+
+                ingredientList.addView(newIngredient, 1);
+
+                newIngredient.requestFocus();
+
+                ImageButton removeButton = (ImageButton) newIngredient.findViewById(R.id.remove_search_ingredient);
+                removeButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        ingredientList.removeView(newIngredient);
+                    }
+                });
+
+            }
+        });
     }
 
     private void setUpIngredientDropDown(final AutoCompleteTextView ingredientSearchView){
@@ -234,16 +246,5 @@ public class RecipeSearchFragment extends Fragment{
             }
         });
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
 }
