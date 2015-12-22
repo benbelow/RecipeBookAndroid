@@ -2,37 +2,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    style="@style/RecipeContent">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name"
-        style="@style/RecipeContent"/>
+        style="@style/SearchSectionHeading"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/RecipeContent"
-        android:id="@+id/recipe_search_name"/>
+        android:background="@android:color/background_light"
+        android:id="@+id/recipe_search_name"
+        style="@style/SearchTextBox"
+        android:paddingBottom="8dp"/>
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ingredients"
-        style="@style/RecipeContent"/>
+        style="@style/SearchSectionHeading"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/recipe_search_ingredient_list">
+        android:id="@+id/recipe_search_ingredient_list"
+        android:paddingBottom="8dp">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/add_search_ingredient"
+            android:background="@android:color/transparent"
+            android:src="@drawable/plus"
+            />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Equipment"
+        style="@style/SearchSectionHeading"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/recipe_search_equipment_list"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_search_equipment"
+            android:background="@android:color/transparent"
             android:src="@drawable/plus"
             />
 
@@ -43,6 +72,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recipe_search_button"
+        android:background="@android:color/transparent"
         android:src="@drawable/search"
         />
 

@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
+import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.recipe.Recipe;
 import com.example.ben.recipebook.services.DataFetchingService;
@@ -52,9 +53,14 @@ public class RecipeSearchFragment extends Fragment{
     @Bind(R.id.add_search_ingredient)
     ImageButton addSearchIngredientButton;
 
+    @Bind(R.id.add_search_equipment)
+    ImageButton addSearchEquipmentButton;
+
     @Bind(R.id.recipe_search_ingredient_list)
     LinearLayout ingredientList;
 
+    @Bind(R.id.recipe_search_equipment_list)
+    LinearLayout equipmentList;
 
     public static RecipeSearchFragment newInstance() {
         RecipeSearchFragment fragment = new RecipeSearchFragment();
@@ -85,6 +91,7 @@ public class RecipeSearchFragment extends Fragment{
 
                 List<String> ingredientsAny = new ArrayList();
                 List<String> ingredientsAll = new ArrayList();
+                List<String> equipment = new ArrayList();
 
                 for(int i=0; i < ingredientList.getChildCount(); i++){
                     View view = ingredientList.getChildAt(i);
@@ -93,15 +100,23 @@ public class RecipeSearchFragment extends Fragment{
                         ToggleButton requiredButton = (ToggleButton) view.findViewById(R.id.recipe_ingredient_required);
 
                         if(requiredButton.isChecked()){
-                            ingredientsAll.add((textView).getText().toString());
+                            ingredientsAll.add(textView.getText().toString());
                         } else{
-                            ingredientsAny.add((textView).getText().toString());
+                            ingredientsAny.add(textView.getText().toString());
                         }
                     }
                 }
 
+                for(int i=0; i < equipmentList.getChildCount(); i++){
+                    View view = equipmentList.getChildAt(i);
+                    if(view instanceof LinearLayout){
+                        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.recipe_search_equipment);
+                        equipment.add(textView.getText().toString());
+                    }
+                }
+
                 searchParams.put("limit", "100");
-                Call<List<Recipe>> call = service.service.listRecipes(searchParams, ingredientsAny, ingredientsAll, null);
+                Call<List<Recipe>> call = service.service.listRecipes(searchParams, ingredientsAny, ingredientsAll, equipment);
 
                 call.enqueue(new Callback<List<Recipe>>() {
                     @Override
@@ -129,15 +144,30 @@ public class RecipeSearchFragment extends Fragment{
         addSearchIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout newIngredient = (LinearLayout)inflater.inflate(R.layout.template_ingredient_search, null);
+                LinearLayout newIngredient = (LinearLayout) inflater.inflate(R.layout.template_ingredient_search, null);
 
-                AutoCompleteTextView view = (AutoCompleteTextView)newIngredient.findViewById(R.id.recipe_search_ingredient);
+                AutoCompleteTextView view = (AutoCompleteTextView) newIngredient.findViewById(R.id.recipe_search_ingredient);
 
                 setUpIngredientDropDown(view);
 
                 ingredientList.addView(newIngredient, 1);
 
                 newIngredient.requestFocus();
+            }
+        });
+
+        addSearchEquipmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout newEquipment = (LinearLayout) inflater.inflate(R.layout.template_equipment_search, null);
+
+                AutoCompleteTextView view = (AutoCompleteTextView) newEquipment.findViewById(R.id.recipe_search_equipment);
+
+                setUpEquipmentDropDown(view);
+
+                equipmentList.addView(newEquipment, 1);
+
+                newEquipment.requestFocus();
             }
         });
 
@@ -157,12 +187,45 @@ public class RecipeSearchFragment extends Fragment{
             @Override
             public void onResponse(Response<List<Ingredient>> response, Retrofit retrofit) {
                 List<Ingredient> ingredients = response.body();
-                for(Ingredient i : ingredients){
-                    ingredientNames.add(i.Name);
-                }
-                mAdapter.notifyDataSetChanged();
+                if (response.isSuccess()) {
+                    for (Ingredient i : ingredients) {
+                        ingredientNames.add(i.Name);
+                    }
+                    mAdapter.notifyDataSetChanged();
 
-                ingredientSearchView.setAdapter(mAdapter);
+                    ingredientSearchView.setAdapter(mAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private void setUpEquipmentDropDown(final AutoCompleteTextView equipmentSearchView){
+        final DataFetchingService service = new DataFetchingService();
+        Call<List<Equipment>> call = service.service.listEquipment();
+
+
+        final ArrayList<String> equipmentNames = new ArrayList<>();
+
+        final ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_dropdown_item_1line, equipmentNames);
+
+        call.enqueue(new Callback<List<Equipment>>() {
+            @Override
+            public void onResponse(Response<List<Equipment>> response, Retrofit retrofit) {
+                List<Equipment> equipments = response.body();
+                if (response.isSuccess()) {
+                    for (Equipment s : equipments) {
+                        equipmentNames.add(s.Name);
+                    }
+                    mAdapter.notifyDataSetChanged();
+
+                    equipmentSearchView.setAdapter(mAdapter);
+                }
             }
 
             @Override

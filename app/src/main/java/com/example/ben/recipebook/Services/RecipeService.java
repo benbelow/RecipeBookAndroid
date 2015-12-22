@@ -1,5 +1,6 @@
 package com.example.ben.recipebook.services;
 
+import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface RecipeService {
             @Query("ingredientsAll") List<String> ingredientsAll,
             @Query("equipment") List<String> equipment);
 
+    @GET("/api/equipment")
+    Call<List<Equipment>> listEquipment();
 }

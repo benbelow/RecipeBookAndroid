@@ -13,4 +13,21 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="SearchSectionHeading">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="SearchTextBox">
+        <item name="android:background">@android:color/background_light</item>
+    </style>
+
+    <style name="AutocompleteSearchTextBox" parent="SearchTextBox">
+        <item name="android:completionThreshold">1</item>
+        <item name="android:cursorVisible">false</item>
+    </style>
+
 </resources>
