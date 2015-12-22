@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.ben.recipebook.android.MainActivity;
 import com.example.ben.recipebook.android.RecipeApplication;
+import com.example.ben.recipebook.android.RecipeSearchFragment;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
 
 import javax.inject.Singleton;
@@ -19,4 +20,5 @@ public interface ApplicationComponent {
     void inject(RecipeApplication application);
     void inject(MainActivity mainActivity);
     void inject(RecipeActivity recipeActivity);
+    void inject(RecipeSearchFragment recipeSearchFragment);
 }

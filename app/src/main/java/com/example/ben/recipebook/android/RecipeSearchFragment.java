@@ -1,12 +1,12 @@
 package com.example.ben.recipebook.android;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,9 +35,17 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class RecipeSearchFragment extends Fragment{
+public class RecipeSearchFragment extends Fragment {
 
     private LayoutInflater inflater;
+
+    private List<String> ingredientNames = new ArrayList<>();
+    private List<String> equipmentNames = new ArrayList<>();
+    private ArrayAdapter equipmentNamesAdapter;
+    private ArrayAdapter ingredientNamesAdapter;
+
+    @Inject
+    DataFetchingService fetchingService;
 
     @Bind(R.id.recipe_search_name)
     EditText nameSearch;
@@ -60,18 +71,69 @@ public class RecipeSearchFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((RecipeApplication) getActivity().getApplication()).getApplicationComponent().inject(this);
+
+        equipmentNamesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, equipmentNames);
+        ingredientNamesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, ingredientNames);
+    }
+
+    @Override
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_search, container, false);
         ButterKnife.bind(this, view);
         this.inflater = inflater;
 
+        fetchIngredientList();
+        fetchEquipmentList();
+        setUpAddSearchTermButton(addSearchIngredientButton, ingredientList, ingredientNamesAdapter);
+        setUpAddSearchTermButton(addSearchEquipmentButton, equipmentList, equipmentNamesAdapter);
         setUpSearchButton();
 
-        setUpAddIngredientButton();
-
-        setUpAddEquipmentButton();
-
         return view;
+    }
+
+    private void fetchIngredientList() {
+        Call<List<Ingredient>> ingredientsCall = fetchingService.service.listIngredients();
+        ingredientsCall.enqueue(new Callback<List<Ingredient>>() {
+            @Override
+            public void onResponse(Response<List<Ingredient>> response, Retrofit retrofit) {
+                List<Ingredient> ingredients = response.body();
+                if (response.isSuccess()) {
+                    for (Ingredient ingredient : ingredients) {
+                        ingredientNames.add(ingredient.Name);
+                    }
+                    ingredientNamesAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private void fetchEquipmentList() {
+        Call<List<Equipment>> equipmentCall = fetchingService.service.listEquipment();
+        equipmentCall.enqueue(new Callback<List<Equipment>>() {
+            @Override
+            public void onResponse(Response<List<Equipment>> response, Retrofit retrofit) {
+                List<Equipment> equipments = response.body();
+                if (response.isSuccess()) {
+                    for (Equipment equipment : equipments) {
+                        equipmentNames.add(equipment.Name);
+                    }
+                    equipmentNamesAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     private void setUpSearchButton() {
@@ -79,20 +141,18 @@ public class RecipeSearchFragment extends Fragment{
             @Override
             public void onClick(View v) {
 
-                DataFetchingService service = new DataFetchingService();
                 Map<String, String> searchParams = new HashMap<String, String>();
                 if (!nameSearch.getText().toString().isEmpty()) {
                     searchParams.put("name", nameSearch.getText().toString());
                 }
 
-                List<String> ingredientsAny = new ArrayList();
-                List<String> ingredientsAll = new ArrayList();
-                List<String> equipment = new ArrayList();
+                List<String> ingredientsAll = new ArrayList<>();
+                List<String> equipment = new ArrayList<>();
 
                 for (int i = 0; i < ingredientList.getChildCount(); i++) {
                     View view = ingredientList.getChildAt(i);
                     if (view instanceof LinearLayout) {
-                        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.recipe_search_ingredient);
+                        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
                         ingredientsAll.add(textView.getText().toString());
                     }
                 }
@@ -100,13 +160,13 @@ public class RecipeSearchFragment extends Fragment{
                 for (int i = 0; i < equipmentList.getChildCount(); i++) {
                     View view = equipmentList.getChildAt(i);
                     if (view instanceof LinearLayout) {
-                        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.recipe_search_equipment);
+                        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
                         equipment.add(textView.getText().toString());
                     }
                 }
 
                 searchParams.put("limit", "100");
-                Call<List<Recipe>> call = service.service.listRecipes(searchParams, ingredientsAny, ingredientsAll, equipment);
+                Call<List<Recipe>> call = fetchingService.service.listRecipes(searchParams, null, ingredientsAll, equipment);
 
                 call.enqueue(new Callback<List<Recipe>>() {
                     @Override
@@ -132,117 +192,27 @@ public class RecipeSearchFragment extends Fragment{
         });
     }
 
-    private void setUpAddEquipmentButton() {
+    private void setUpAddSearchTermButton(ImageButton button, final LinearLayout layout, final ArrayAdapter adapter) {
 
-        addSearchEquipmentButton.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final LinearLayout newEquipment = (LinearLayout) inflater.inflate(R.layout.template_equipment_search, null);
+                final LinearLayout newSearchTermLayout = (LinearLayout) inflater.inflate(R.layout.template_search_item, null);
+                final AutoCompleteTextView view = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
 
-                AutoCompleteTextView view = (AutoCompleteTextView) newEquipment.findViewById(R.id.recipe_search_equipment);
+                view.setAdapter(adapter);
 
-                setUpEquipmentDropDown(view);
+                layout.addView(newSearchTermLayout, 1);
+                newSearchTermLayout.requestFocus();
 
-                equipmentList.addView(newEquipment, 1);
-
-                newEquipment.requestFocus();
-
-                ImageButton removeButton = (ImageButton) newEquipment.findViewById(R.id.remove_search_equipment);
+                ImageButton removeButton = (ImageButton) newSearchTermLayout.findViewById(R.id.remove_search_item);
                 removeButton.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        equipmentList.removeView(newEquipment);
+                        layout.removeView(newSearchTermLayout);
                     }
                 });
-            }
-        });
-    }
-
-    private void setUpAddIngredientButton() {
-        addSearchIngredientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final LinearLayout newIngredient = (LinearLayout) inflater.inflate(R.layout.template_ingredient_search, null);
-
-                AutoCompleteTextView view = (AutoCompleteTextView) newIngredient.findViewById(R.id.recipe_search_ingredient);
-
-                setUpIngredientDropDown(view);
-
-                ingredientList.addView(newIngredient, 1);
-
-                newIngredient.requestFocus();
-
-                ImageButton removeButton = (ImageButton) newIngredient.findViewById(R.id.remove_search_ingredient);
-                removeButton.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        ingredientList.removeView(newIngredient);
-                    }
-                });
-
-            }
-        });
-    }
-
-    private void setUpIngredientDropDown(final AutoCompleteTextView ingredientSearchView){
-        final DataFetchingService service = new DataFetchingService();
-        Call<List<Ingredient>> call = service.service.listIngredients();
-
-        final ArrayList<String> ingredientNames = new ArrayList<>();
-
-        final ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_dropdown_item_1line, ingredientNames);
-
-        call.enqueue(new Callback<List<Ingredient>>() {
-            @Override
-            public void onResponse(Response<List<Ingredient>> response, Retrofit retrofit) {
-                List<Ingredient> ingredients = response.body();
-                if (response.isSuccess()) {
-                    for (Ingredient i : ingredients) {
-                        ingredientNames.add(i.Name);
-                    }
-                    mAdapter.notifyDataSetChanged();
-
-                    ingredientSearchView.setAdapter(mAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
-
-    private void setUpEquipmentDropDown(final AutoCompleteTextView equipmentSearchView){
-        final DataFetchingService service = new DataFetchingService();
-        Call<List<Equipment>> call = service.service.listEquipment();
-
-
-        final ArrayList<String> equipmentNames = new ArrayList<>();
-
-        final ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_dropdown_item_1line, equipmentNames);
-
-        call.enqueue(new Callback<List<Equipment>>() {
-            @Override
-            public void onResponse(Response<List<Equipment>> response, Retrofit retrofit) {
-                List<Equipment> equipments = response.body();
-                if (response.isSuccess()) {
-                    for (Equipment s : equipments) {
-                        equipmentNames.add(s.Name);
-                    }
-                    mAdapter.notifyDataSetChanged();
-
-                    equipmentSearchView.setAdapter(mAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
             }
         });
     }

@@ -10,4 +10,9 @@ public class Equipment implements Serializable{
 
     public final String Name;
 
+    @Override
+    public String toString(){
+        return Name;
+    }
+
 }
