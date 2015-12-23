@@ -1,79 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    style="@style/RecipeContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/RecipeContent">
+    android:orientation="vertical">
 
     <TextView
+        style="@style/SearchSectionHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name"
-        style="@style/SearchSectionHeading"/>
+        android:text="Name" />
 
     <EditText
+        android:id="@+id/recipe_search_name"
+        style="@style/SearchTextBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
-        android:id="@+id/recipe_search_name"
-        style="@style/SearchTextBox"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp" />
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ingredients"
-        style="@style/SearchSectionHeading"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal">
+
+            <TextView
+                style="@style/SearchSectionHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Ingredients" />
+
+            <ImageButton
+                android:id="@+id/add_search_ingredient"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingLeft="4dp"
+                android:src="@drawable/plus" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/recipe_search_ingredient_list"
-        android:paddingBottom="8dp">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/add_search_ingredient"
-            android:background="@android:color/transparent"
-            android:src="@drawable/plus"
-            />
-
-    </LinearLayout>
-
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Equipment"
-        style="@style/SearchSectionHeading"/>
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/recipe_search_equipment_list"
-        android:paddingBottom="8dp">
+        android:orientation="horizontal">
 
-        <ImageButton
+        <TextView
+            style="@style/SearchSectionHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Equipment" />
+
+        <ImageButton
             android:id="@+id/add_search_equipment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:src="@drawable/plus"
-            />
+            android:paddingLeft="4dp"
+            android:src="@drawable/plus" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/recipe_search_equipment_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
+    </LinearLayout>
 
     <ImageButton
+        android:id="@+id/recipe_search_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recipe_search_button"
         android:background="@android:color/transparent"
-        android:src="@drawable/search"
-        />
+        android:src="@drawable/search" />
 
 </LinearLayout>
