@@ -224,7 +224,7 @@ public class RecipeSearchFragment extends Fragment {
 
                 view.setAdapter(adapter);
 
-                layout.addView(newSearchTermLayout);
+                layout.addView(newSearchTermLayout,0);
                 newSearchTermLayout.requestFocus();
 
                 ImageButton removeButton = (ImageButton) newSearchTermLayout.findViewById(R.id.remove_search_item);
