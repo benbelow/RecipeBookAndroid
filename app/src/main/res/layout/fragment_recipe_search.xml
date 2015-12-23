@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/RecipeContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        style="@style/SearchSectionHeading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name" />
-
-    <EditText
-        android:id="@+id/recipe_search_name"
-        style="@style/SearchTextBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
-        android:paddingBottom="8dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/recipe_search_name"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:paddingBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 style="@style/SearchSectionHeading"
@@ -39,106 +45,105 @@
                 android:paddingLeft="4dp"
                 android:src="@drawable/plus" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/recipe_search_ingredient_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="8dp">
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/recipe_search_ingredient_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"></LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SearchSectionHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Equipment" />
+
+            <ImageButton
+                android:id="@+id/add_search_equipment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingLeft="4dp"
+                android:src="@drawable/plus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/recipe_search_equipment_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"></LinearLayout>
 
         <TextView
             style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Max Time" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Equipment" />
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingRight="12dp">
+
+                <NumberPicker
+                    android:id="@+id/search_max_time_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="hour"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="12dp">
+
+                <NumberPicker
+                    android:id="@+id/search_max_time_minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="min"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageButton
-            android:id="@+id/add_search_equipment"
+            android:id="@+id/recipe_search_button"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:paddingLeft="4dp"
-            android:src="@drawable/plus" />
-
+            android:padding="12dp"
+            android:src="@drawable/search" />
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/recipe_search_equipment_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="8dp">
-    </LinearLayout>
-
-    <TextView
-        style="@style/SearchSectionHeading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Max Time"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="12dp"
-            android:orientation="vertical">
-
-            <NumberPicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_max_time_hours"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:text="hour"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:orientation="vertical">
-
-            <NumberPicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/search_max_time_minutes"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="min"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/recipe_search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:padding="12dp"
-        android:src="@drawable/search" />
-
-</LinearLayout>
+    
+</ScrollView>
