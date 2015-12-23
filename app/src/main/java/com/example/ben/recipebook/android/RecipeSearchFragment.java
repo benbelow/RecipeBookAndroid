@@ -163,7 +163,7 @@ public class RecipeSearchFragment extends Fragment {
         picker.setDisplayedValues(displayedValues);
     }
 
-    private String getNumberPickerDisplayedValue(NumberPicker picker){
+    private String getNumberPickerDisplayedValue(NumberPicker picker) {
         return picker.getDisplayedValues()[picker.getValue()];
     }
 
@@ -239,7 +239,10 @@ public class RecipeSearchFragment extends Fragment {
                     View view = ingredientList.getChildAt(i);
                     if (view instanceof LinearLayout) {
                         AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
-                        ingredientsAll.add(textView.getText().toString());
+                        String ingredientName = textView.getText().toString();
+                        if (!ingredientName.isEmpty()) {
+                            ingredientsAll.add(ingredientName);
+                        }
                     }
                 }
 
@@ -247,7 +250,10 @@ public class RecipeSearchFragment extends Fragment {
                     View view = equipmentList.getChildAt(i);
                     if (view instanceof LinearLayout) {
                         AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
-                        equipment.add(textView.getText().toString());
+                        String equipmentName = textView.getText().toString();
+                        if(!equipmentName.isEmpty()){
+                            equipment.add(equipmentName);
+                        }
                     }
                 }
 
