@@ -120,12 +120,12 @@ public class RecipeSearchFragment extends Fragment {
         setUpSearchButton();
 
         //ToDo: make these numbers less magic, at least constants
-        maxTimeHours.setMaxValue(23);
         String[] minuteDisplayedValues = new String[]{"0", "15", "30", "45"};
-        maxTimeMinutes.setMaxValue(minuteDisplayedValues.length - 1);
-        maxTimeMinutes.setWrapSelectorWheel(true);
-        maxTimeMinutes.setDisplayedValues(minuteDisplayedValues);
-        minServingsSearch.setMaxValue(15);
+        String[] hourDisplayedValues = new String[]{"0", "1", "2", "3", "4", "5", "10", "15"};
+        String[] servingsDisplayedValues = new String[]{"1", "2", "3", "4", "5", "10", "15"};
+        setUpNumberPicker(maxTimeMinutes, minuteDisplayedValues);
+        setUpNumberPicker(maxTimeHours, hourDisplayedValues);
+        setUpNumberPicker(minServingsSearch, servingsDisplayedValues);
 
         timeHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +155,16 @@ public class RecipeSearchFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void setUpNumberPicker(NumberPicker picker, String[] displayedValues) {
+        picker.setMaxValue(displayedValues.length - 1);
+        picker.setWrapSelectorWheel(true);
+        picker.setDisplayedValues(displayedValues);
+    }
+
+    private String getNumberPickerDisplayedValue(NumberPicker picker){
+        return picker.getDisplayedValues()[picker.getValue()];
     }
 
     private void fetchIngredientList() {
@@ -207,9 +217,10 @@ public class RecipeSearchFragment extends Fragment {
                 Map<String, String> searchParams = new HashMap<String, String>();
 
                 String name = nameSearch.getText().toString();
-                int minutes = Integer.parseInt(maxTimeMinutes.getDisplayedValues()[maxTimeMinutes.getValue()]);
-                Integer maxTotalTime = (maxTimeHours.getValue() * 60) + minutes;
-                Integer minServings = minServingsSearch.getValue();
+                int minutes = Integer.parseInt(getNumberPickerDisplayedValue(maxTimeMinutes));
+                int hours = Integer.parseInt(getNumberPickerDisplayedValue(maxTimeHours));
+                Integer maxTotalTime = (hours * 60) + minutes;
+                String minServings = getNumberPickerDisplayedValue(minServingsSearch);
 
                 if (!name.isEmpty()) {
                     searchParams.put("name", name);
@@ -217,8 +228,8 @@ public class RecipeSearchFragment extends Fragment {
                 if (maxTotalTime != 0) {
                     searchParams.put("maxTotalTime", maxTotalTime.toString());
                 }
-                if (minServings != 0) {
-                    searchParams.put("minNumberOfServings", minServings.toString());
+                if (minServings != "0") {
+                    searchParams.put("minNumberOfServings", minServings);
                 }
 
                 List<String> ingredientsAll = new ArrayList<>();
