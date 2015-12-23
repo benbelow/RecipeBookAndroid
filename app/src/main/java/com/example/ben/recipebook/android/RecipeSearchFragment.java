@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.models.Equipment;
@@ -65,6 +66,12 @@ public class RecipeSearchFragment extends Fragment {
     @Bind(R.id.recipe_search_equipment_list)
     LinearLayout equipmentList;
 
+    @Bind(R.id.search_max_time_hours)
+    NumberPicker maxTimeHours;
+
+    @Bind(R.id.search_max_time_minutes)
+    NumberPicker maxTimeMinutes;
+
     public static RecipeSearchFragment newInstance() {
         RecipeSearchFragment fragment = new RecipeSearchFragment();
         return fragment;
@@ -90,6 +97,13 @@ public class RecipeSearchFragment extends Fragment {
         setUpAddSearchTermButton(addSearchIngredientButton, ingredientList, ingredientNamesAdapter);
         setUpAddSearchTermButton(addSearchEquipmentButton, equipmentList, equipmentNamesAdapter);
         setUpSearchButton();
+
+        //ToDo: make these numbers less magic, at least constants
+        maxTimeHours.setMaxValue(23);
+        String[] minuteDisplayedValues = new String[]{"0", "15", "30", "45"};
+        maxTimeMinutes.setMaxValue(minuteDisplayedValues.length - 1);
+        maxTimeMinutes.setWrapSelectorWheel(true);
+        maxTimeMinutes.setDisplayedValues(minuteDisplayedValues);
 
         return view;
     }
@@ -142,8 +156,16 @@ public class RecipeSearchFragment extends Fragment {
             public void onClick(View v) {
 
                 Map<String, String> searchParams = new HashMap<String, String>();
-                if (!nameSearch.getText().toString().isEmpty()) {
-                    searchParams.put("name", nameSearch.getText().toString());
+
+                String name = nameSearch.getText().toString();
+                int minutes = Integer.parseInt(maxTimeMinutes.getDisplayedValues()[maxTimeMinutes.getValue()]);
+                Integer maxTotalTime = (maxTimeHours.getValue() * 60) + minutes;
+
+                if (!name.isEmpty()) {
+                    searchParams.put("name", name);
+                }
+                if (maxTotalTime != 0) {
+                    searchParams.put("maxTotalTime", maxTotalTime.toString());
                 }
 
                 List<String> ingredientsAll = new ArrayList<>();

@@ -19,7 +19,6 @@
         android:background="@android:color/background_light"
         android:paddingBottom="8dp" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,11 +79,66 @@
         android:paddingBottom="8dp">
     </LinearLayout>
 
+    <TextView
+        style="@style/SearchSectionHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max Time"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="12dp"
+            android:orientation="vertical">
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_max_time_hours"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="hour"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:orientation="vertical">
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_max_time_minutes"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="min"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/recipe_search_button"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:padding="12dp"
         android:src="@drawable/search" />
 
 </LinearLayout>
