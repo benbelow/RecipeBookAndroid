@@ -1,18 +1,22 @@
 package com.example.ben.recipebook.android;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.models.Equipment;
@@ -25,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -72,6 +75,24 @@ public class RecipeSearchFragment extends Fragment {
     @Bind(R.id.search_max_time_minutes)
     NumberPicker maxTimeMinutes;
 
+    @Bind(R.id.time_header)
+    LinearLayout timeHeader;
+
+    @Bind(R.id.time_search_image)
+    ImageView timeSearchImage;
+
+    @Bind(R.id.time_container)
+    LinearLayout timeContainer;
+
+    @Bind(R.id.servings_header)
+    LinearLayout servingsHeader;
+
+    @Bind(R.id.servings_search_image)
+    ImageView servingsSearchImage;
+
+    @Bind(R.id.recipe_search_min_servings)
+    NumberPicker minServingsSearch;
+
     public static RecipeSearchFragment newInstance() {
         RecipeSearchFragment fragment = new RecipeSearchFragment();
         return fragment;
@@ -104,6 +125,34 @@ public class RecipeSearchFragment extends Fragment {
         maxTimeMinutes.setMaxValue(minuteDisplayedValues.length - 1);
         maxTimeMinutes.setWrapSelectorWheel(true);
         maxTimeMinutes.setDisplayedValues(minuteDisplayedValues);
+        minServingsSearch.setMaxValue(15);
+
+        timeHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (timeContainer.getVisibility() == View.VISIBLE) {
+                    timeSearchImage.setImageResource(R.drawable.expand_arrow);
+                    timeContainer.setVisibility(View.GONE);
+                } else {
+                    timeSearchImage.setImageResource(R.drawable.collapse_arrow);
+                    timeContainer.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        servingsHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (minServingsSearch.getVisibility() == View.VISIBLE) {
+                    servingsSearchImage.setImageResource(R.drawable.expand_arrow);
+                    minServingsSearch.setVisibility(View.GONE);
+                } else {
+                    servingsSearchImage.setImageResource(R.drawable.collapse_arrow);
+                    minServingsSearch.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         return view;
     }
@@ -160,12 +209,16 @@ public class RecipeSearchFragment extends Fragment {
                 String name = nameSearch.getText().toString();
                 int minutes = Integer.parseInt(maxTimeMinutes.getDisplayedValues()[maxTimeMinutes.getValue()]);
                 Integer maxTotalTime = (maxTimeHours.getValue() * 60) + minutes;
+                Integer minServings = minServingsSearch.getValue();
 
                 if (!name.isEmpty()) {
                     searchParams.put("name", name);
                 }
                 if (maxTotalTime != 0) {
                     searchParams.put("maxTotalTime", maxTotalTime.toString());
+                }
+                if (minServings != 0) {
+                    searchParams.put("minNumberOfServings", minServings.toString());
                 }
 
                 List<String> ingredientsAll = new ArrayList<>();
@@ -224,7 +277,7 @@ public class RecipeSearchFragment extends Fragment {
 
                 view.setAdapter(adapter);
 
-                layout.addView(newSearchTermLayout,0);
+                layout.addView(newSearchTermLayout, 0);
                 newSearchTermLayout.requestFocus();
 
                 ImageButton removeButton = (ImageButton) newSearchTermLayout.findViewById(R.id.remove_search_item);

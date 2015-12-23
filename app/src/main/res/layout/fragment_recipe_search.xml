@@ -3,11 +3,13 @@
     style="@style/RecipeContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
 
@@ -52,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="8dp"></LinearLayout>
+            android:paddingBottom="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,19 +83,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="8dp"></LinearLayout>
-
-        <TextView
-            style="@style/SearchSectionHeading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Max Time" />
+            android:paddingBottom="8dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/time_header">
+
+            <TextView
+                android:id="@+id/time_title"
+                style="@style/SearchSectionHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Max Time" />
+
+            <ImageView
+                android:id="@+id/time_search_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:src="@drawable/expand_arrow" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/time_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -137,6 +158,35 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/servings_header">
+
+            <TextView
+                android:id="@+id/servings_title"
+                style="@style/SearchSectionHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minimum Number of Servings" />
+
+            <ImageView
+                android:id="@+id/servings_search_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:src="@drawable/expand_arrow" />
+
+        </LinearLayout>
+
+        <NumberPicker
+            android:id="@+id/recipe_search_min_servings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
         <ImageButton
             android:id="@+id/recipe_search_button"
             android:layout_width="wrap_content"
@@ -144,6 +194,7 @@
             android:background="@android:color/transparent"
             android:padding="12dp"
             android:src="@drawable/search" />
+
     </LinearLayout>
-    
+
 </ScrollView>
