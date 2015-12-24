@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -33,6 +36,12 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     @Inject
     DataFetchingService fetchingService;
+
+    @Bind(R.id.loading_bar_view)
+    LinearLayout loadingBarView;
+
+    @Bind(R.id.no_results)
+    LinearLayout noResults;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,7 +82,10 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        ButterKnife.bind(this, view);
+
+        loadingBarView.setVisibility(View.VISIBLE);
 
         Bundle bundle = this.getArguments();
 
@@ -97,6 +109,10 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
                     }
 
                     mAdapter.notifyDataSetChanged();
+                    loadingBarView.setVisibility(View.GONE);
+                }
+                if(allRecipes.isEmpty()){
+                    noResults.setVisibility(View.VISIBLE);
                 }
             }
 
