@@ -11,21 +11,38 @@ import android.view.MenuItem;
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class RecipeSearchResultsActivity extends FragmentActivity implements RecipeListFragment.OnFragmentInteractionListener{
+
+    private List<Recipe> recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_search_results);
 
-        List<Recipe> recipes = (List<Recipe>) getIntent().getExtras().getSerializable("recipes");
+        recipes = (List<Recipe>) getIntent().getExtras().getSerializable("recipes");
+
+        RecipeListFragment fragment = RecipeListFragment.newInstance(recipes);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.search_results_container, fragment);
+        fragmentTransaction.commit();
+    }
 
-        fragmentTransaction.replace(R.id.fragment, RecipeListFragment.newInstance(recipes)).commit();
+    @Override
+    protected void onStop(){
+        super.onStop();
+        getIntent().putExtra("recipes", (Serializable) recipes);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        recipes = (List<Recipe>) getIntent().getExtras().getSerializable("recipes");
     }
 
     @Override

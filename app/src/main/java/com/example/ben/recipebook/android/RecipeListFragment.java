@@ -69,6 +69,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
         if(bundle != null)
             allRecipes = (List<Recipe>) this.getArguments().getSerializable("recipes");
+
             for(Recipe r : allRecipes){
                 recipeNames.add(r.Name);
         }
