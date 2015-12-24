@@ -7,24 +7,32 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
+import com.example.ben.recipebook.fetching.DataFetchingService;
+import com.example.ben.recipebook.fetching.RecipeFetcher;
+import com.example.ben.recipebook.fetching.RecipeSearchTerms;
 import com.example.ben.recipebook.models.recipe.Recipe;
-import com.example.ben.recipebook.services.DataFetchingService;
-import retrofit.Call;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 public class RecipeListFragment extends Fragment implements AbsListView.OnItemClickListener {
+
+    @Inject
+    DataFetchingService fetchingService;
 
     private OnFragmentInteractionListener mListener;
 
@@ -42,10 +50,10 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         return fragment;
     }
 
-    public static RecipeListFragment newInstance(List<Recipe> recipes){
+    public static RecipeListFragment newInstance(RecipeSearchTerms searchTerms) {
         RecipeListFragment fragment = new RecipeListFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("recipes", (Serializable) recipes);
+        bundle.putSerializable("searchTerms", searchTerms);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -57,6 +65,8 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ((RecipeApplication) getActivity().getApplication()).getApplicationComponent().inject(this);
+
         mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, recipeNames);
     }
 
@@ -67,12 +77,34 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
         Bundle bundle = this.getArguments();
 
-        if(bundle != null)
-            allRecipes = (List<Recipe>) this.getArguments().getSerializable("recipes");
+        RecipeSearchTerms searchTerms;
 
-            for(Recipe r : allRecipes){
-                recipeNames.add(r.Name);
+        if (bundle != null) {
+            searchTerms = (RecipeSearchTerms) this.getArguments().getSerializable("searchTerms");
+        } else {
+            searchTerms = new RecipeSearchTerms();
         }
+
+        RecipeFetcher fetcher = new RecipeFetcher(fetchingService, searchTerms);
+        fetcher.fetchListCall().enqueue(new Callback<List<Recipe>>() {
+            @Override
+            public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    allRecipes.addAll(response.body());
+
+                    for (Recipe r : allRecipes) {
+                        recipeNames.add(r.Name);
+                    }
+
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
         // Set the adapter
         mListView = (ListView) view.findViewById(android.R.id.list);

@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.services;
+package com.example.ben.recipebook.fetching;
 
 import javax.inject.Inject;
 
@@ -21,7 +21,11 @@ public class DataFetchingService {
         service = retrofit.create(RecipeService.class);
     }
 
-    public RecipeService service;
+    public RecipeService getService() {
+        return service;
+    }
+
+    private RecipeService service;
 }
 
 

@@ -1,48 +1,43 @@
 package com.example.ben.recipebook.android;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.fetching.DataFetchingService;
+import com.example.ben.recipebook.fetching.RecipeSearchTerms;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeSearchResultsActivity extends FragmentActivity implements RecipeListFragment.OnFragmentInteractionListener{
+import javax.inject.Inject;
 
-    private List<Recipe> recipes;
+public class RecipeSearchResultsActivity extends FragmentActivity implements RecipeListFragment.OnFragmentInteractionListener {
+
+    private List<Recipe> recipes = new ArrayList<>();
+
+    @Inject
+    DataFetchingService fetchingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_search_results);
+        ((RecipeApplication) getApplication()).getApplicationComponent().inject(this);
 
-        recipes = (List<Recipe>) getIntent().getExtras().getSerializable("recipes");
-
-        RecipeListFragment fragment = RecipeListFragment.newInstance(recipes);
+        RecipeSearchTerms searchTerms = (RecipeSearchTerms) getIntent().getExtras().getSerializable("searchTerms");
+        RecipeListFragment fragment = RecipeListFragment.newInstance(searchTerms);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.search_results_container, fragment);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        getIntent().putExtra("recipes", (Serializable) recipes);
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        recipes = (List<Recipe>) getIntent().getExtras().getSerializable("recipes");
     }
 
     @Override

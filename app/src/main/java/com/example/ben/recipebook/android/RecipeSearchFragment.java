@@ -1,11 +1,8 @@
 package com.example.ben.recipebook.android;
 
-import android.animation.LayoutTransition;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +13,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.fetching.DataFetchingService;
+import com.example.ben.recipebook.fetching.RecipeSearchTerms;
 import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
-import com.example.ben.recipebook.models.recipe.Recipe;
-import com.example.ben.recipebook.services.DataFetchingService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -168,7 +161,7 @@ public class RecipeSearchFragment extends Fragment {
     }
 
     private void fetchIngredientList() {
-        Call<List<Ingredient>> ingredientsCall = fetchingService.service.listIngredients();
+        Call<List<Ingredient>> ingredientsCall = fetchingService.getService().listIngredients();
         ingredientsCall.enqueue(new Callback<List<Ingredient>>() {
             @Override
             public void onResponse(Response<List<Ingredient>> response, Retrofit retrofit) {
@@ -189,7 +182,7 @@ public class RecipeSearchFragment extends Fragment {
     }
 
     private void fetchEquipmentList() {
-        Call<List<Equipment>> equipmentCall = fetchingService.service.listEquipment();
+        Call<List<Equipment>> equipmentCall = fetchingService.getService().listEquipment();
         equipmentCall.enqueue(new Callback<List<Equipment>>() {
             @Override
             public void onResponse(Response<List<Equipment>> response, Retrofit retrofit) {
@@ -213,25 +206,10 @@ public class RecipeSearchFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Map<String, String> searchParams = new HashMap<String, String>();
-
-                String name = nameSearch.getText().toString();
                 int minutes = Integer.parseInt(getNumberPickerDisplayedValue(maxTimeMinutes));
                 int hours = Integer.parseInt(getNumberPickerDisplayedValue(maxTimeHours));
                 Integer maxTotalTime = (hours * 60) + minutes;
                 String minServings = getNumberPickerDisplayedValue(minServingsSearch);
-
-                if (!name.isEmpty()) {
-                    searchParams.put("name", name);
-                }
-                if (maxTotalTime != 0) {
-                    searchParams.put("maxTotalTime", maxTotalTime.toString());
-                }
-                if (minServings != "0") {
-                    searchParams.put("minNumberOfServings", minServings);
-                }
-
                 List<String> ingredientsAll = new ArrayList<>();
                 List<String> equipment = new ArrayList<>();
 
@@ -257,29 +235,17 @@ public class RecipeSearchFragment extends Fragment {
                     }
                 }
 
-                searchParams.put("limit", "100");
-                Call<List<Recipe>> call = fetchingService.service.listRecipes(searchParams, null, ingredientsAll, equipment);
+                RecipeSearchTerms searchTerms = new RecipeSearchTerms();
 
-                call.enqueue(new Callback<List<Recipe>>() {
-                    @Override
-                    public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
-                        List<Recipe> recipes = response.body();
+                searchTerms.name = (nameSearch.getText().toString());
+                searchTerms.maxTime = (maxTotalTime);
+                searchTerms.minServings = (Integer.parseInt(minServings));
+                searchTerms.ingredients = (ingredientsAll);
+                searchTerms.equipments = (equipment);
 
-                        if (response.isSuccess()) {
-                            if (recipes.size() > 0) {
-                                Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
-                                recipeSearchResultsIntent.putExtra("recipes", (Serializable) recipes);
-                                startActivity(recipeSearchResultsIntent);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-
-                    }
-                });
-
+                Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
+                recipeSearchResultsIntent.putExtra("searchTerms", searchTerms);
+                startActivity(recipeSearchResultsIntent);
             }
         });
     }

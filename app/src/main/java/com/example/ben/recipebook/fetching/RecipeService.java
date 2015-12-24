@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.services;
+package com.example.ben.recipebook.fetching;
 
 import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;

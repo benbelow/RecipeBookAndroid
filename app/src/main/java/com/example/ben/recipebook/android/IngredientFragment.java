@@ -11,7 +11,7 @@ import android.widget.*;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.models.Ingredient;
-import com.example.ben.recipebook.services.DataFetchingService;
+import com.example.ben.recipebook.fetching.DataFetchingService;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -58,7 +58,7 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
 
         //ToDo: Add dagger DI
         DataFetchingService service = new DataFetchingService();
-        Call<List<Ingredient>> call = service.service.listIngredients();
+        Call<List<Ingredient>> call = service.getService().listIngredients();
 
         call.enqueue(new Callback<List<Ingredient>>() {
             @Override

@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.BaseAdapter;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.models.recipe.Recipe;
-import com.example.ben.recipebook.services.DataFetchingService;
+import com.example.ben.recipebook.fetching.DataFetchingService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Call;
@@ -62,24 +60,7 @@ public class MainActivity extends ActionBarActivity
 
         switch(position){
             case 0:
-                DataFetchingService service = new DataFetchingService();
-                Call<List<Recipe>> call = service.service.listRecipes(null, null, null, null);
-
-                call.enqueue(new Callback<List<Recipe>>() {
-                    @Override
-                    public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
-                        List<Recipe> recipes = response.body();
-                        if(response.isSuccess()) {
-                            recipes.addAll(recipes);
-                            fragmentTransaction.replace(R.id.container, RecipeListFragment.newInstance(recipes)).commit();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-
-                    }
-                });
+                fragmentTransaction.replace(R.id.container, RecipeListFragment.newInstance()).commit();
                 break;
             case 1:
                 fragmentTransaction.replace(R.id.container, RecipeSearchFragment.newInstance()).commit();
