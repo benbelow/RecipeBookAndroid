@@ -17,10 +17,14 @@ import android.widget.TextView;
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.fetching.DataFetchingService;
+import com.example.ben.recipebook.fetching.IListFetcher;
+import com.example.ben.recipebook.fetching.OwnedRecipeFetcher;
+import com.example.ben.recipebook.fetching.OwnedRecipeSearchTerms;
 import com.example.ben.recipebook.fetching.RecipeFetcher;
 import com.example.ben.recipebook.fetching.RecipeSearchTerms;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +51,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     private AbsListView mListView;
 
-    private ArrayAdapter mAdapter;
+    private ArrayAdapter<String> mAdapter;
 
     //TODO: Better naming
     private List<Recipe> allRecipes = new ArrayList<>();
@@ -59,7 +63,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         return fragment;
     }
 
-    public static RecipeListFragment newInstance(RecipeSearchTerms searchTerms) {
+    public static RecipeListFragment newInstance(Serializable searchTerms) {
         RecipeListFragment fragment = new RecipeListFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("searchTerms", searchTerms);
@@ -89,15 +93,24 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
         Bundle bundle = this.getArguments();
 
-        RecipeSearchTerms searchTerms;
+        Serializable searchTerms;
 
         if (bundle != null) {
-            searchTerms = (RecipeSearchTerms) this.getArguments().getSerializable("searchTerms");
+            searchTerms = this.getArguments().getSerializable("searchTerms");
         } else {
             searchTerms = new RecipeSearchTerms();
         }
 
-        RecipeFetcher fetcher = new RecipeFetcher(fetchingService, searchTerms);
+        IListFetcher<Recipe> fetcher;
+
+        if (searchTerms instanceof RecipeSearchTerms) {
+            fetcher = new RecipeFetcher(fetchingService, (RecipeSearchTerms) searchTerms);
+        } else if (searchTerms instanceof OwnedRecipeSearchTerms) {
+            fetcher = new OwnedRecipeFetcher(fetchingService, (OwnedRecipeSearchTerms) searchTerms);
+        } else {
+            fetcher = new RecipeFetcher(fetchingService, new RecipeSearchTerms());
+        }
+
         fetcher.fetchListCall().enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Response<List<Recipe>> response, Retrofit retrofit) {
@@ -109,9 +122,11 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
                     }
 
                     mAdapter.notifyDataSetChanged();
-                    loadingBarView.setVisibility(View.GONE);
                 }
-                if(allRecipes.isEmpty()){
+
+                loadingBarView.setVisibility(View.GONE);
+
+                if (allRecipes.isEmpty()) {
                     noResults.setVisibility(View.VISIBLE);
                 }
             }

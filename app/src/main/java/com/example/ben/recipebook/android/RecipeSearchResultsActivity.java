@@ -31,7 +31,7 @@ public class RecipeSearchResultsActivity extends FragmentActivity implements Rec
         setContentView(R.layout.activity_recipe_search_results);
         ((RecipeApplication) getApplication()).getApplicationComponent().inject(this);
 
-        RecipeSearchTerms searchTerms = (RecipeSearchTerms) getIntent().getExtras().getSerializable("searchTerms");
+        Serializable searchTerms = getIntent().getExtras().getSerializable("searchTerms");
         RecipeListFragment fragment = RecipeListFragment.newInstance(searchTerms);
 
         FragmentManager fragmentManager = getSupportFragmentManager();

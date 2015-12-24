@@ -26,6 +26,12 @@ public interface RecipeService {
             @Query("ingredientsAll") List<String> ingredientsAll,
             @Query("equipment") List<String> equipment);
 
+    @GET("/api/recipes/with")
+    Call<List<Recipe>> listOwnedRecipes(
+            @Query("ownedIngredients") List<String> ownedIngredients,
+            @Query("requiredIngredients") List<String> requiredIngredients,
+            @Query("equipment") List<String> equipment);
+
     @GET("/api/equipment")
     Call<List<Equipment>> listEquipment();
 }
