@@ -122,7 +122,7 @@ public class RecipeSearchFragment extends Fragment {
         //ToDo: make these numbers less magic, at least constants
         String[] minuteDisplayedValues = new String[]{"0", "15", "30", "45"};
         String[] hourDisplayedValues = new String[]{"0", "1", "2", "3", "4", "5", "10", "15"};
-        String[] servingsDisplayedValues = new String[]{"1", "2", "3", "4", "5", "10", "15"};
+        String[] servingsDisplayedValues = new String[]{"1", "2", "3", "4", "5", "6", "8", "12"};
         setUpNumberPicker(maxTimeMinutes, minuteDisplayedValues);
         setUpNumberPicker(maxTimeHours, hourDisplayedValues);
         setUpNumberPicker(minServingsSearch, servingsDisplayedValues);
