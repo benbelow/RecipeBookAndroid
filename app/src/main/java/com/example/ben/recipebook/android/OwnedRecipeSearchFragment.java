@@ -95,8 +95,13 @@ public class OwnedRecipeSearchFragment extends Fragment {
 
         savedIngredientsKey = "com.example.app.savedIngredients";
         savedEquipmentKey = "com.example.app.savedEquipment";
-        Set<String> savedIngredients = sharedPreferences.getStringSet(savedIngredientsKey, new HashSet<String>());
-        Set<String> savedEquipment = sharedPreferences.getStringSet(savedEquipmentKey, new HashSet<String>());
+        List<String> savedIngredients = new ArrayList<>(sharedPreferences.getStringSet(savedIngredientsKey, new HashSet<String>()));
+        List<String> savedEquipment = new ArrayList<>(sharedPreferences.getStringSet(savedEquipmentKey, new HashSet<String>()));
+
+        Collections.sort(savedIngredients, String.CASE_INSENSITIVE_ORDER);
+        Collections.reverse(savedIngredients);
+        Collections.sort(savedEquipment, String.CASE_INSENSITIVE_ORDER);
+        Collections.reverse(savedEquipment);
 
         if (savedIngredients != null) {
             addViewsForSavedSearchTerms(savedIngredients, ingredientList, ingredientNamesAdapter);
@@ -109,7 +114,7 @@ public class OwnedRecipeSearchFragment extends Fragment {
         return view;
     }
 
-    private void addViewsForSavedSearchTerms(Set<String> savedStrings, final LinearLayout layout, ArrayAdapter adapter) {
+    private void addViewsForSavedSearchTerms(List<String> savedStrings, final LinearLayout layout, ArrayAdapter adapter) {
         for (String s : savedStrings) {
             final LinearLayout newSearchTermLayout = (LinearLayout) this.inflater.inflate(R.layout.template_search_item, null);
             final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
@@ -135,30 +140,27 @@ public class OwnedRecipeSearchFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
 
-        List<String> ingredientNamess = new ArrayList<>();
+        Set<String> ingredientNames = new HashSet<>();
         for (int i = 0; i < ingredientList.getChildCount(); i++) {
             View view = ingredientList.getChildAt(i);
             if (view instanceof LinearLayout) {
                 AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
                 String ingredientName = textView.getText().toString();
-                ingredientNamess.add(ingredientName);
+                ingredientNames.add(ingredientName);
             }
         }
-        List<String> equipmentNamess = new ArrayList<>();
+        Set<String> equipmentNames = new HashSet<>();
         for (int i = 0; i < equipmentList.getChildCount(); i++) {
             View view = equipmentList.getChildAt(i);
             if (view instanceof LinearLayout) {
                 AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
                 String equipmentName = textView.getText().toString();
-                equipmentNamess.add(equipmentName);
+                equipmentNames.add(equipmentName);
             }
         }
 
-        Collections.sort(ingredientNamess);
-        Collections.sort(equipmentNamess);
-
-        sharedPreferences.edit().putStringSet(savedIngredientsKey, new HashSet<>(ingredientNamess)).apply();
-        sharedPreferences.edit().putStringSet(savedEquipmentKey, new HashSet<>(equipmentNamess)).apply();
+        sharedPreferences.edit().putStringSet(savedIngredientsKey, ingredientNames).apply();
+        sharedPreferences.edit().putStringSet(savedEquipmentKey, equipmentNames).apply();
     }
 
     private void fetchIngredientList() {
