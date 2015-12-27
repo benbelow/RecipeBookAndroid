@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.fetching.DataFetchingService;
@@ -89,7 +90,7 @@ public class OwnedRecipeSearchFragment extends Fragment {
 
         fetchIngredientList();
         fetchEquipmentList();
-        setUpAddSearchTermButton(addSearchIngredientButton, ingredientList, ingredientNamesAdapter);
+        setUpAddSearchTermWithToggleButton(addSearchIngredientButton, ingredientList, ingredientNamesAdapter);
         setUpAddSearchTermButton(addSearchEquipmentButton, equipmentList, equipmentNamesAdapter);
         setUpSearchButton();
 
@@ -103,20 +104,19 @@ public class OwnedRecipeSearchFragment extends Fragment {
         Collections.sort(savedEquipment, String.CASE_INSENSITIVE_ORDER);
         Collections.reverse(savedEquipment);
 
-        if (savedIngredients != null) {
+        if (!savedIngredients.isEmpty()) {
             addViewsForSavedSearchTerms(savedIngredients, ingredientList, ingredientNamesAdapter);
         }
-        if (savedEquipment != null) {
+        if (!savedEquipment.isEmpty()) {
             addViewsForSavedSearchTerms(savedEquipment, equipmentList, equipmentNamesAdapter);
         }
-
 
         return view;
     }
 
     private void addViewsForSavedSearchTerms(List<String> savedStrings, final LinearLayout layout, ArrayAdapter adapter) {
         for (String s : savedStrings) {
-            final LinearLayout newSearchTermLayout = (LinearLayout) this.inflater.inflate(R.layout.template_search_item, null);
+            final LinearLayout newSearchTermLayout = (LinearLayout) this.inflater.inflate(R.layout.template_search_item_with_toggle, null);
             final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
 
             autoCompleteTextView.setAdapter(adapter);
@@ -137,7 +137,7 @@ public class OwnedRecipeSearchFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         Set<String> ingredientNames = new HashSet<>();
@@ -209,7 +209,8 @@ public class OwnedRecipeSearchFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> ingredientsAll = new ArrayList<>();
+                List<String> ingredientsOwned = new ArrayList<>();
+                List<String> ingredientsRequired = new ArrayList<>();
                 List<String> equipment = new ArrayList<>();
 
                 for (int i = 0; i < ingredientList.getChildCount(); i++) {
@@ -217,10 +218,15 @@ public class OwnedRecipeSearchFragment extends Fragment {
                     if (view instanceof LinearLayout) {
                         AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
                         String ingredientName = textView.getText().toString();
-                        ingredientsAll.add(ingredientName);
+
+                        ToggleButton toggle = (ToggleButton) view.findViewById(R.id.search_item_toggle);
+                        if (toggle.isChecked()) {
+                            ingredientsRequired.add(ingredientName);
+                        } else {
+                            ingredientsOwned.add(ingredientName);
+                        }
                     }
                 }
-
 
                 for (int i = 0; i < equipmentList.getChildCount(); i++) {
                     View view = equipmentList.getChildAt(i);
@@ -235,7 +241,8 @@ public class OwnedRecipeSearchFragment extends Fragment {
 
                 OwnedRecipeSearchTerms searchTerms = new OwnedRecipeSearchTerms();
 
-                searchTerms.ingredientsOwned = ingredientsAll;
+                searchTerms.ingredientsOwned = ingredientsOwned;
+                searchTerms.ingredientsRequired = ingredientsRequired;
                 searchTerms.equipments = equipment;
 
                 Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
@@ -252,6 +259,31 @@ public class OwnedRecipeSearchFragment extends Fragment {
             public void onClick(View v) {
 
                 final LinearLayout newSearchTermLayout = (LinearLayout) inflater.inflate(R.layout.template_search_item, null);
+                final AutoCompleteTextView view = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
+
+                view.setAdapter(adapter);
+
+                layout.addView(newSearchTermLayout, 0);
+                newSearchTermLayout.requestFocus();
+
+                ImageButton removeButton = (ImageButton) newSearchTermLayout.findViewById(R.id.remove_search_item);
+                removeButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        layout.removeView(newSearchTermLayout);
+                    }
+                });
+            }
+        });
+    }
+
+    private void setUpAddSearchTermWithToggleButton(ImageButton button, final LinearLayout layout, final ArrayAdapter adapter) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final LinearLayout newSearchTermLayout = (LinearLayout) inflater.inflate(R.layout.template_search_item_with_toggle, null);
                 final AutoCompleteTextView view = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
 
                 view.setAdapter(adapter);
