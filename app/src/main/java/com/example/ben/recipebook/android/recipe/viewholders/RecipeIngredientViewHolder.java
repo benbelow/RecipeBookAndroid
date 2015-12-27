@@ -11,7 +11,7 @@ import com.example.ben.recipebook.android.ViewHolder;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RecipeIngredientViewHolder extends ViewHolder{
+public class RecipeIngredientViewHolder extends ViewHolder {
 
     @Bind(R.id.recipe_ingredient_amount)
     TextView amountView;
@@ -22,7 +22,13 @@ public class RecipeIngredientViewHolder extends ViewHolder{
     @Bind(R.id.recipe_ingredient_name)
     TextView nameView;
 
-    public RecipeIngredientViewHolder(Ingredient ingredient, View view){
+    @Bind(R.id.recipe_ingredient_description)
+    TextView descriptionView;
+
+    @Bind(R.id.recipe_ingredient_comma)
+    TextView commaView;
+
+    public RecipeIngredientViewHolder(Ingredient ingredient, View view) {
         super(view);
         ButterKnife.bind(this, getView());
     }
@@ -34,8 +40,14 @@ public class RecipeIngredientViewHolder extends ViewHolder{
         amountView.setText(Integer.toString(ingredient.Amount));
         unitsView.setText(ingredient.Units);
         nameView.setText(ingredient.Name);
+        descriptionView.setText(ingredient.Description);
 
-        if(ingredient.Units == ""){
+        if (ingredient.Description == null || ingredient.Description.isEmpty()) {
+            commaView.setVisibility(View.GONE);
+            descriptionView.setVisibility(View.GONE);
+        }
+
+        if (ingredient.Units == null || ingredient.Units.isEmpty()) {
             unitsView.setVisibility(View.GONE);
         }
     }

@@ -33,5 +33,22 @@
         android:paddingLeft="10dp">
     </TextView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/recipe_ingredient_comma"
+        style="@style/Base.TextAppearance.AppCompat.SearchResult"
+        android:textColor="@android:color/black"
+        android:text=", ">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/recipe_ingredient_description"
+        style="@style/Base.TextAppearance.AppCompat.SearchResult"
+        android:textColor="@android:color/black">
+    </TextView>
+
 
 </LinearLayout>
