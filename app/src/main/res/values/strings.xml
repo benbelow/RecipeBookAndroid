@@ -5,6 +5,7 @@
     <string name="title_section1">Default Recipes</string>
     <string name="title_section2">Search Recipes</string>
     <string name="title_section3">Filter Recipes by owned stuff</string>
+    <string name="title_section4">Add recipe</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/cross"
+        android:padding="8dp"
+        android:id="@+id/remove_item"/>
+
+    <AutoCompleteTextView
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:id="@+id/ingredient_name"
+        style="@style/AutocompleteSearchTextBox"
+        />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:inputType="number"
+        android:id="@+id/ingredient_amount"/>
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/ingredient_units"/>
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/ingredient_description"/>
+
+</LinearLayout>

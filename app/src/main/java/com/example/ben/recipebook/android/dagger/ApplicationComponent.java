@@ -3,6 +3,7 @@ package com.example.ben.recipebook.android.dagger;
 import android.content.Context;
 
 import com.example.ben.recipebook.android.MainActivity;
+import com.example.ben.recipebook.android.NewRecipeFragment;
 import com.example.ben.recipebook.android.OwnedRecipeSearchFragment;
 import com.example.ben.recipebook.android.RecipeApplication;
 import com.example.ben.recipebook.android.RecipeListFragment;
@@ -28,4 +29,5 @@ public interface ApplicationComponent {
     void inject(RecipeSearchFragment recipeSearchFragment);
     void inject(OwnedRecipeSearchFragment ownedRecipeSearchFragment);
     void inject(RecipeListFragment recipeListFragment);
+    void inject(NewRecipeFragment recipeListFragment);
 }
