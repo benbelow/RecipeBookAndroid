@@ -28,17 +28,17 @@ public class RecipeViewHolderMapping {
     public ViewHolder getViewHolder(int position) {
         MappingPair pair = viewHolderDetails.get(position);
 
-        if(pair == null){
+        if (pair == null) {
             throw new IllegalArgumentException("Asked for view holder for invalid position in mapping.");
         }
         return viewHolderFactory.buildViewHolder(pair.type, pair.content);
     }
 
-    public static class MappingPair{
+    public static class MappingPair {
         protected final Class<? extends ViewHolder> type;
         protected final Object content;
 
-        public MappingPair(Class<? extends ViewHolder> viewHolderType, Object content){
+        public MappingPair(Class<? extends ViewHolder> viewHolderType, Object content) {
             this.type = viewHolderType;
             this.content = content;
         }
@@ -46,13 +46,17 @@ public class RecipeViewHolderMapping {
 
     private final List<MappingPair> viewHolderDetails;
 
-    public RecipeViewHolderMapping(Recipe recipe, ViewHolderFactory viewHolderFactory){
+    public RecipeViewHolderMapping(Recipe recipe, ViewHolderFactory viewHolderFactory) {
         this.viewHolderFactory = viewHolderFactory;
         viewHolderDetails = Collections.unmodifiableList(mapRecipe(recipe));
     }
 
     private List<MappingPair> mapRecipe(Recipe recipe) {
         List<MappingPair> recipeViewHolderPairs = new ArrayList<>();
+
+        if (recipe.ImageSource != null) {
+            recipeViewHolderPairs.add(new MappingPair(RecipeImageViewHolder.class, recipe.ImageSource));
+        }
 
         recipeViewHolderPairs.add(new MappingPair(RecipeNameViewHolder.class, recipe.Name));
         recipeViewHolderPairs.add(new MappingPair(RecipeAuthorViewHolder.class, recipe.Author));
@@ -64,11 +68,7 @@ public class RecipeViewHolderMapping {
         recipeViewHolderPairs.add(new MappingPair(RecipeIngredientsListViewHolder.class, recipe.Ingredients));
         recipeViewHolderPairs.add(new MappingPair(RecipeEquipmentListViewHolder.class, recipe.Equipment));
 
-//        for(int i = 0; i < 20; i++){
-//            recipeViewHolderPairs.add(new MappingPair(RecipeNameViewHolder.class, "Filler!"));
-//        }
-
-        for(Instruction instruction : recipe.Instructions){
+        for (Instruction instruction : recipe.Instructions) {
             recipeViewHolderPairs.add(new MappingPair(RecipeInstructionViewHolder.class, instruction));
         }
 

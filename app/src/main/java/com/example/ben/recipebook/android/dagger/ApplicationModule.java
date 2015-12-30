@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 
+import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -16,6 +19,7 @@ public class ApplicationModule {
     private final Context context;
     private final SharedPreferences sharedPreferences;
 
+    @Inject
     public ApplicationModule(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
@@ -34,6 +38,11 @@ public class ApplicationModule {
     @Provides
     public SharedPreferences provideSharedPreferences() {
         return sharedPreferences;
+    }
+
+    @Provides
+    public Picasso providePicasso(){
+        return Picasso.with(context);
     }
 
 }

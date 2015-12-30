@@ -6,11 +6,13 @@ import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeAuthorViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeEquipmentListViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeEquipmentViewHolder;
+import com.example.ben.recipebook.android.recipe.viewholders.RecipeImageViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientsListViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeInstructionViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeMealtypeViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeServingsViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeTimingsViewHolder;
+import com.example.ben.recipebook.fetching.ImageService;
 import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientViewHolder;
@@ -25,10 +27,12 @@ import javax.inject.Inject;
 public class ViewHolderFactory {
 
     private LayoutInflater inflater;
+    private ImageService imageService;
 
     @Inject
-    public ViewHolderFactory(LayoutInflater inflater){
+    public ViewHolderFactory(LayoutInflater inflater, ImageService imageService){
         this.inflater = inflater;
+        this.imageService = imageService;
     }
 
     public <T> T buildViewHolder(Class<T> klass, Object content){
@@ -56,9 +60,16 @@ public class ViewHolderFactory {
         else if(RecipeTimingsViewHolder.class.isAssignableFrom(klass)){
             return (T) buildRecipeTimingsViewHolder((RecipeTimings) content);
         }
+        else if(RecipeImageViewHolder.class.isAssignableFrom(klass)){
+            return (T) buildRecipeImageViewHolder((String) content);
+        }
         else {
             throw new IllegalStateException("Unrecognised view holder type requested.");
         }
+    }
+
+    private RecipeImageViewHolder buildRecipeImageViewHolder(String imageSource) {
+        return new RecipeImageViewHolder(imageSource, inflater, imageService);
     }
 
     private RecipeIngredientsListViewHolder buildRecipeIngredientsListViewHolder(List<Ingredient> ingredients) {
