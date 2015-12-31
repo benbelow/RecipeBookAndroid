@@ -64,16 +64,9 @@ public class ViewHolderFactory {
         else if(RecipeImageViewHolder.class.isAssignableFrom(klass)){
             return (T) buildRecipeImageViewHolder((String) content);
         }
-        else if(RecipeCardViewHolder.class.isAssignableFrom(klass)){
-            return (T) buildRecipeCardViewHolder((Recipe) content);
-        }
         else {
             throw new IllegalStateException("Unrecognised view holder type requested.");
         }
-    }
-
-    private RecipeCardViewHolder buildRecipeCardViewHolder(Recipe recipe) {
-        return new RecipeCardViewHolder(recipe, inflater, imageService);
     }
 
     private RecipeImageViewHolder buildRecipeImageViewHolder(String imageSource) {

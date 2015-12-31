@@ -4,20 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.fetching.IListFetcher;
+import com.example.ben.recipebook.fetching.ImageService;
 import com.example.ben.recipebook.fetching.OwnedRecipeFetcher;
 import com.example.ben.recipebook.fetching.OwnedRecipeSearchTerms;
 import com.example.ben.recipebook.fetching.RecipeFetcher;
@@ -44,6 +46,9 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     @Inject
     ViewHolderFactory viewHolderFactory;
 
+    @Inject
+    ImageService imageService;
+
     @Bind(R.id.loading_bar_view)
     LinearLayout loadingBarView;
 
@@ -52,7 +57,8 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     private OnFragmentInteractionListener mListener;
 
-    private AbsListView mListView;
+    @Bind(R.id.recipe_list)
+    RecyclerView recipeListView;
 
     private RecipeCardAdapter mAdapter;
 
@@ -83,7 +89,8 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
         ((RecipeApplication) getActivity().getApplication()).getApplicationComponent().inject(this);
 
-        mAdapter = new RecipeCardAdapter(viewHolderFactory);
+        mAdapter = new RecipeCardAdapter(imageService);
+
     }
 
     @Override
@@ -91,6 +98,10 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         ButterKnife.bind(this, view);
+
+
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recipeListView.setLayoutManager(layoutManager);
 
         loadingBarView.setVisibility(View.VISIBLE);
 
@@ -142,12 +153,11 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         });
 
         // Set the adapter
-        mListView = (ListView) view.findViewById(android.R.id.list);
-        mListView.setAdapter(mAdapter);
+        recipeListView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
         // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
+//        recipeListView.setOnItemClickListener(this);
         return view;
     }
 
@@ -174,19 +184,6 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
             Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
             recipeIntent.putExtra("Recipe", allRecipes.get(position));
             startActivity(recipeIntent);
-        }
-    }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
         }
     }
 
