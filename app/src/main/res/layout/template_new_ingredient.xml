@@ -1,41 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_height="match_parent"
     android:layout_width="fill_parent"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp">
 
     <ImageButton
-        android:layout_height="wrap_content"
+        android:id="@+id/remove_item"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@android:color/transparent"
-        android:src="@drawable/cross"
         android:padding="8dp"
-        android:id="@+id/remove_item"/>
+        android:src="@drawable/cross" />
 
-    <AutoCompleteTextView
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/ingredient_name"
-        style="@style/AutocompleteSearchTextBox"
-        />
-
-    <EditText
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:inputType="number"
-        android:id="@+id/ingredient_amount"/>
+        android:orientation="vertical"
+        android:paddingRight="8dp">
 
-    <EditText
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/ingredient_units"/>
 
-    <EditText
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/ingredient_description"/>
+        <AutoCompleteTextView
+            android:id="@+id/ingredient_name"
+            style="@style/AutocompleteSearchTextBox"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ingredient_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Amount"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/ingredient_units"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Units"
+                android:inputType="text"/>
+
+            <EditText
+                android:id="@+id/ingredient_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:inputType="text"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
