@@ -60,7 +60,8 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     @Bind(R.id.recipe_list)
     RecyclerView recipeListView;
 
-    private RecipeCardAdapter mAdapter;
+    @Inject
+    RecipeCardAdapter mAdapter;
 
     //TODO: Better naming
     private List<Recipe> allRecipes = new ArrayList<>();
@@ -88,9 +89,6 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
         super.onCreate(savedInstanceState);
 
         ((RecipeApplication) getActivity().getApplication()).getApplicationComponent().inject(this);
-
-        mAdapter = new RecipeCardAdapter(imageService);
-
     }
 
     @Override

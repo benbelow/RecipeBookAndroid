@@ -1,14 +1,13 @@
 package com.example.ben.recipebook.android;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.BaseAdapter;
 
 import com.example.ben.recipebook.R;
-import com.example.ben.recipebook.android.recipe.viewholders.RecipeViewHolderMapping;
+import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.fetching.ImageService;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
@@ -43,7 +42,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardViewHolder
 
     @Override
     public void onBindViewHolder(RecipeCardViewHolder holder, int position) {
-        Recipe recipe = recipes.get(position);
+        final Recipe recipe = recipes.get(position);
         holder.title.setText(recipe.Name);
 
         if (recipe.ImageSource != null && !recipe.ImageSource.isEmpty()) {
@@ -53,6 +52,15 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardViewHolder
         } else {
             holder.image.setVisibility(View.GONE);
         }
+
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), RecipeActivity.class);
+                intent.putExtra("Recipe", recipe);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
