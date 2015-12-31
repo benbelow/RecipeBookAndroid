@@ -54,7 +54,7 @@ public class RecipeViewHolderMapping {
     private List<MappingPair> mapRecipe(Recipe recipe) {
         List<MappingPair> recipeViewHolderPairs = new ArrayList<>();
 
-        if (recipe.ImageSource != null & !recipe.ImageSource.isEmpty()) {
+        if (recipe.ImageSource != null && !recipe.ImageSource.isEmpty()) {
             recipeViewHolderPairs.add(new MappingPair(RecipeImageViewHolder.class, recipe.ImageSource));
         }
 

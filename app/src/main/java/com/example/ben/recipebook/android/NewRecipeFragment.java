@@ -1,5 +1,6 @@
 package com.example.ben.recipebook.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,11 +13,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.recipe.Instruction;
 import com.example.ben.recipebook.models.recipe.NewRecipeBody;
+import com.example.ben.recipebook.models.recipe.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,13 +166,13 @@ public class NewRecipeFragment extends Fragment {
                     }
                 }
 
-                for (int i = 0; i < instructionList.getChildCount(); i++){
+                for (int i = 0; i < instructionList.getChildCount(); i++) {
                     View view = instructionList.getChildAt(i);
                     if (view instanceof LinearLayout) {
                         EditText nameView = (EditText) view.findViewById(R.id.new_instruction);
                         String instructionText = nameView.getText().toString();
 
-                        Instruction instruction = new Instruction(i+1, instructionText);
+                        Instruction instruction = new Instruction(i + 1, instructionText);
                         instructions.add(instruction);
                     }
                 }
@@ -177,10 +180,15 @@ public class NewRecipeFragment extends Fragment {
 
                 NewRecipeBody body = new NewRecipeBody(ingredients, equipments, instructions);
 
-                Call postCall = fetchingService.getService().postRecipe(name, description, mealType, prepTime, cookTime, numberOfServings, author, body);
-                postCall.enqueue(new Callback() {
+                Call<Recipe> postCall = fetchingService.getService().postRecipe(name, description, mealType, prepTime, cookTime, numberOfServings, author, body);
+                postCall.enqueue(new Callback<Recipe>() {
                     @Override
                     public void onResponse(Response response, Retrofit retrofit) {
+                        if (response.isSuccess()) {
+                            Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
+                            recipeIntent.putExtra("Recipe", (Recipe) response.body());
+                            startActivity(recipeIntent);
+                        }
                     }
 
                     @Override
