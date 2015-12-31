@@ -6,9 +6,12 @@ import com.example.ben.recipebook.models.Ingredient;
 import java.util.List;
 import java.util.Map;
 
+import com.example.ben.recipebook.models.recipe.NewRecipeBody;
 import com.example.ben.recipebook.models.recipe.Recipe;
 import retrofit.Call;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Query;
 import retrofit.http.QueryMap;
 
@@ -34,4 +37,15 @@ public interface RecipeService {
 
     @GET("/api/equipment")
     Call<List<Equipment>> listEquipment();
+
+    @POST("/api/recipes/postRecipe")
+    Call<Recipe> postRecipe(
+            @Query("name") String name,
+            @Query("description") String description,
+            @Query("mealType") String mealType,
+            @Query("prepTime") int prepTime,
+            @Query("cookTime") int cookTime,
+            @Query("numberOfServings") int numberOfServings,
+            @Query("author") String author,
+            @Body NewRecipeBody body);
 }

@@ -7,8 +7,14 @@ import java.util.List;
 
 public class NewRecipeBody {
 
-    public List<Instruction> instructionList;
-    public List<Ingredient> ingredientList;
-    public List<Equipment> equipmentList;
+    public List<Ingredient> Ingredients;
+    public List<Equipment> Equipment;
+    public List<Instruction> Instructions;
+
+    public NewRecipeBody(List<Ingredient> ingredients, List<Equipment> equipments, List<Instruction> instructions){
+        Ingredients = ingredients;
+        Equipment = equipments;
+        Instructions = instructions;
+    }
 
 }

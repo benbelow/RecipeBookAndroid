@@ -26,6 +26,93 @@
             android:background="@android:color/background_light"
             android:paddingBottom="8dp" />
 
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description" />
+
+        <EditText
+            android:id="@+id/recipe_new_description"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meal Type" />
+
+        <EditText
+            android:id="@+id/recipe_new_meal_type"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prep Time" />
+
+        <EditText
+            android:id="@+id/recipe_new_prep_time"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:inputType="number"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cook Time" />
+
+        <EditText
+            android:id="@+id/recipe_new_cook_time"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:inputType="number"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Number Of Servings" />
+
+        <EditText
+            android:id="@+id/recipe_new_number_of_servings"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:inputType="number"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            style="@style/SearchSectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Author" />
+
+        <EditText
+            android:id="@+id/recipe_new_author"
+            style="@style/SearchTextBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:paddingBottom="8dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +136,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/recipe_search_ingredient_list"
+            android:id="@+id/recipe_new_ingredient_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -78,11 +165,43 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/recipe_search_equipment_list"
+            android:id="@+id/recipe_new_equipment_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="8dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SearchSectionHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Instructions" />
+
+            <ImageButton
+                android:id="@+id/add_instruction"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingLeft="4dp"
+                android:src="@drawable/plus" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/recipe_new_instruction_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="8dp" />
+
+
 
         <ImageButton
             android:id="@+id/create_recipe_button"
