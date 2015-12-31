@@ -26,6 +26,12 @@ public class ImageService {
                 .into(view);
     }
 
+    public void loadImageIntoViewWithoutScaling(ImageView view, String imageSource){
+        String url = getUrl(imageSource);
+        picasso.load(url)
+                .into(view);
+    }
+
     private String getUrl(String imageSource) {
         return baseUrl + imageSource;
     }
