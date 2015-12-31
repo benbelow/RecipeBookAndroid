@@ -18,6 +18,7 @@ import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeNameViewHolder;
 import com.example.ben.recipebook.models.recipe.Instruction;
+import com.example.ben.recipebook.models.recipe.Recipe;
 import com.example.ben.recipebook.models.recipe.RecipeTimings;
 
 import java.util.List;
@@ -63,9 +64,16 @@ public class ViewHolderFactory {
         else if(RecipeImageViewHolder.class.isAssignableFrom(klass)){
             return (T) buildRecipeImageViewHolder((String) content);
         }
+        else if(RecipeCardViewHolder.class.isAssignableFrom(klass)){
+            return (T) buildRecipeCardViewHolder((Recipe) content);
+        }
         else {
             throw new IllegalStateException("Unrecognised view holder type requested.");
         }
+    }
+
+    private RecipeCardViewHolder buildRecipeCardViewHolder(Recipe recipe) {
+        return new RecipeCardViewHolder(recipe, inflater, imageService);
     }
 
     private RecipeImageViewHolder buildRecipeImageViewHolder(String imageSource) {

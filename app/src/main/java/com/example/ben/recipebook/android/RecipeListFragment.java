@@ -41,6 +41,9 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     @Inject
     DataFetchingService fetchingService;
 
+    @Inject
+    ViewHolderFactory viewHolderFactory;
+
     @Bind(R.id.loading_bar_view)
     LinearLayout loadingBarView;
 
@@ -51,7 +54,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     private AbsListView mListView;
 
-    private ArrayAdapter<String> mAdapter;
+    private RecipeCardAdapter mAdapter;
 
     //TODO: Better naming
     private List<Recipe> allRecipes = new ArrayList<>();
@@ -80,7 +83,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
         ((RecipeApplication) getActivity().getApplication()).getApplicationComponent().inject(this);
 
-        mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, recipeNames);
+        mAdapter = new RecipeCardAdapter(viewHolderFactory);
     }
 
     @Override
@@ -122,6 +125,7 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
                     }
 
                     mAdapter.notifyDataSetChanged();
+                    mAdapter.setRecipes(allRecipes);
                 }
 
                 loadingBarView.setVisibility(View.GONE);
