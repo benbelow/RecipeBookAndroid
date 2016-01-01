@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Recipe implements Serializable{
 
+    public final int Id;
     public final String Name;
     public final String Description;
     public final String MealType;
@@ -20,7 +21,8 @@ public class Recipe implements Serializable{
     public final List<Equipment> Equipment;
     public final List<Instruction> Instructions;
 
-    public Recipe(String description, String mealType, int preparationTime, int cookTime, int numberOfServings, String author, List<Ingredient> ingredients, String name, String imageSource, List<Equipment> equipment, List<Instruction> instructions) {
+    public Recipe(int id, String name, String description, String mealType, String author, String imageSource, int numberOfServings, int cookTime, int preparationTime, List<Ingredient> ingredients, List<Equipment> equipment, List<Instruction> instructions) {
+        Id = id;
         Description = description;
         MealType = mealType;
         CookTime = cookTime;

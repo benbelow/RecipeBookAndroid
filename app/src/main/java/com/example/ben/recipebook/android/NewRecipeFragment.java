@@ -178,9 +178,9 @@ public class NewRecipeFragment extends Fragment {
                 }
 
 
-                NewRecipeBody body = new NewRecipeBody(ingredients, equipments, instructions);
+                Recipe newRecipe = new Recipe(0, name, description, mealType, author, null, numberOfServings, cookTime, prepTime, ingredients, equipments, instructions);
 
-                Call<Recipe> postCall = fetchingService.getService().postRecipe(name, description, mealType, prepTime, cookTime, numberOfServings, author, body);
+                Call<Recipe> postCall = fetchingService.getService().postRecipe(newRecipe);
                 postCall.enqueue(new Callback<Recipe>() {
                     @Override
                     public void onResponse(Response response, Retrofit retrofit) {

@@ -38,14 +38,7 @@ public interface RecipeService {
     @GET("/api/equipment")
     Call<List<Equipment>> listEquipment();
 
-    @POST("/api/recipes/postRecipe")
+    @POST("/api/recipes")
     Call<Recipe> postRecipe(
-            @Query("name") String name,
-            @Query("description") String description,
-            @Query("mealType") String mealType,
-            @Query("prepTime") int prepTime,
-            @Query("cookTime") int cookTime,
-            @Query("numberOfServings") int numberOfServings,
-            @Query("author") String author,
-            @Body NewRecipeBody body);
+            @Body Recipe body);
 }
