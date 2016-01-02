@@ -1,6 +1,5 @@
 package com.example.ben.recipebook.fetching;
 
-import android.content.Context;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -23,12 +22,6 @@ public class ImageService {
         picasso.load(url)
                 .fit()
                 .centerCrop()
-                .into(view);
-    }
-
-    public void loadImageIntoViewWithoutScaling(ImageView view, String imageSource){
-        String url = getUrl(imageSource);
-        picasso.load(url)
                 .into(view);
     }
 

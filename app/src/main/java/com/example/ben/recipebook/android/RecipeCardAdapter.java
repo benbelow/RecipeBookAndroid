@@ -46,7 +46,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardViewHolder
         holder.title.setText(recipe.Name);
 
         if (recipe.ImageSource != null && !recipe.ImageSource.isEmpty()) {
-            imageService.loadImageIntoViewWithoutScaling(holder.image, recipe.ImageSource);
+            imageService.loadImageIntoView(holder.image, recipe.ImageSource);
             holder.image.setVisibility(View.GONE);
             holder.image.setVisibility(View.VISIBLE);
         } else {
