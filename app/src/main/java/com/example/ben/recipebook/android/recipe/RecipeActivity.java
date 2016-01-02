@@ -220,7 +220,7 @@ public class RecipeActivity extends ActionBarActivity {
 
     private void uploadImageToS3(String filePath, String s3Key) {
         PutObjectRequest por = new PutObjectRequest(BUCKET_NAME, s3Key, new java.io.File(filePath));
-        new ImageUploadTask().execute(por);
+        new ImageUploadTask(this).execute(por);
     }
 
     private String getPath(Uri uri) {
