@@ -167,10 +167,13 @@ public class RecipeActivity extends ActionBarActivity {
             return true;
         }
 
+        if(id == R.id.action_upload_image){
+            uploadImage();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.recipe_upload_image)
     public void uploadImage() {
         Intent intent = new Intent();
         intent.setType("image/*");

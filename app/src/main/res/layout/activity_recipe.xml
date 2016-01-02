@@ -122,14 +122,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/recipe_upload_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload Image"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
-
     </LinearLayout>
 
 </ScrollView>
