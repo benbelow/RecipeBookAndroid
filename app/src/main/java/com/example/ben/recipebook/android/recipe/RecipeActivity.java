@@ -18,6 +18,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.fetching.ImageUploadTask;
 import com.example.ben.recipebook.android.RecipeApplication;
+import com.example.ben.recipebook.services.S3ImageNamer;
 import com.example.ben.recipebook.services.TimeFormatter;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeEquipmentViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientViewHolder;
@@ -31,7 +32,10 @@ import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.recipe.Instruction;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,7 +53,6 @@ public class RecipeActivity extends ActionBarActivity {
 
     //ToDo: CONFIG!
     private static final String BUCKET_NAME = "recipes-assets";
-    private static final Object S3PREFIX = "recipe-images/";
 
     Recipe recipe;
 
@@ -186,10 +189,10 @@ public class RecipeActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             String filePath = getPath(data.getData());
-            String s3Key = S3PREFIX + "recipe-" + recipe.Id + "-" + recipe.Name.trim() + ".jpg";
+
+            String s3Key = S3ImageNamer.nameS3ImageForRecipe(recipe);
 
             uploadImageToS3(filePath, s3Key);
-
             updateRecipeImageSource(s3Key);
         }
     }
