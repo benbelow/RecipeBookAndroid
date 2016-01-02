@@ -8,10 +8,13 @@ import java.util.Map;
 
 import com.example.ben.recipebook.models.recipe.NewRecipeBody;
 import com.example.ben.recipebook.models.recipe.Recipe;
+
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.PATCH;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.http.QueryMap;
 
@@ -41,4 +44,9 @@ public interface RecipeService {
     @POST("/api/recipes")
     Call<Recipe> postRecipe(
             @Body Recipe body);
+
+    @PATCH("/api/recipes/{id}")
+    Call<Recipe> patchRecipe(
+            @Path("id") int recipeId,
+            @Body JsonPatchDocument patchData);
 }
