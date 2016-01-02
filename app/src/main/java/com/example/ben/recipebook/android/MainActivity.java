@@ -11,15 +11,7 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 
 import com.example.ben.recipebook.R;
-import com.example.ben.recipebook.models.recipe.Recipe;
-import com.example.ben.recipebook.fetching.DataFetchingService;
-
-import java.util.List;
-
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import com.example.ben.recipebook.android.recipeList.RecipeListFragment;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,

@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.android;
+package com.example.ben.recipebook.android.recipeList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,11 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.RecipeApplication;
 import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.fetching.IListFetcher;
@@ -42,9 +41,6 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
     @Inject
     DataFetchingService fetchingService;
-
-    @Inject
-    ViewHolderFactory viewHolderFactory;
 
     @Inject
     ImageService imageService;

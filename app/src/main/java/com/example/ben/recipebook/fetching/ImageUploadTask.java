@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.android;
+package com.example.ben.recipebook.fetching;
 
 import android.os.AsyncTask;
 
@@ -14,7 +14,6 @@ public class ImageUploadTask extends AsyncTask<PutObjectRequest, Integer, Long> 
 
     @Override
     protected Long doInBackground(PutObjectRequest... putObjectRequests) {
-
         AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(MY_ACCESS_KEY_ID, MY_SECRET_KEY));
         s3Client.putObject(putObjectRequests[0]);
         return null;

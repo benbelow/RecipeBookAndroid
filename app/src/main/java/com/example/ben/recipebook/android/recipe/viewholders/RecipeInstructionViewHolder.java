@@ -1,6 +1,7 @@
 package com.example.ben.recipebook.android.recipe.viewholders;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
@@ -19,8 +20,8 @@ public class RecipeInstructionViewHolder extends ViewHolder {
     @Bind(R.id.recipe_instruction_number)
     TextView instructionNumberView;
 
-    public RecipeInstructionViewHolder(Instruction instruction, LayoutInflater inflater) {
-        super(inflater.inflate(R.layout.template_recipe_instruction, null));
+    public RecipeInstructionViewHolder(Instruction instruction, View view) {
+        super(view);
         ButterKnife.bind(this, getView());
         updateContent(instruction);
     }

@@ -1,4 +1,4 @@
-package com.example.ben.recipebook.android;
+package com.example.ben.recipebook.android.recipeList;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;

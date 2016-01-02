@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.recipeList.RecipeListFragment;
 import com.example.ben.recipebook.fetching.DataFetchingService;
-import com.example.ben.recipebook.fetching.RecipeSearchTerms;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
 import java.io.Serializable;
