@@ -49,7 +49,6 @@
 
             </LinearLayout>
 
-
         </RelativeLayout>
 
         <TextView
@@ -76,6 +75,12 @@
                 android:paddingLeft="4dp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/recipe_scale_servings"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ruler" />
 
         </LinearLayout>
 

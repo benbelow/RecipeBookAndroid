@@ -1,5 +1,6 @@
 package com.example.ben.recipebook.android.recipe;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,13 +11,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.MainActivity;
+import com.example.ben.recipebook.android.ViewHolder;
 import com.example.ben.recipebook.fetching.ImageUploadTask;
 import com.example.ben.recipebook.android.RecipeApplication;
 import com.example.ben.recipebook.services.S3ImageNamer;
@@ -33,10 +37,9 @@ import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.recipe.Instruction;
 import com.example.ben.recipebook.models.recipe.Recipe;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -198,6 +201,49 @@ public class RecipeActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.recipe_scale_servings)
+    public void scaleServings(){
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_number_picker);
+        dialog.setTitle("Servings");
+        Button setButton = (Button) dialog.findViewById(R.id.set);
+        Button cancelButton = (Button) dialog.findViewById(R.id.cancel);
+        final NumberPicker numberPicker = (NumberPicker) dialog.findViewById(R.id.numberPicker);
+        numberPicker.setMaxValue(30);
+        numberPicker.setMinValue(1);
+        numberPicker.setValue(Integer.parseInt(servingsView.getText().toString()));
+        numberPicker.setWrapSelectorWheel(false);
+
+        //ToDo: Make adapter with reference to ingredient models, rather than calculation based on strings
+        setButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int oldServings = Integer.parseInt(servingsView.getText().toString());
+                int newServings = numberPicker.getValue();
+                servingsView.setText(String.valueOf(newServings));
+                for (int i = 0; i < ingredientList.getChildCount(); i++) {
+                    View ingredientView = ingredientList.getChildAt(i);
+                    if (ingredientView instanceof LinearLayout) {
+                        TextView amountTextView = (TextView) (ingredientView).findViewById(R.id.recipe_ingredient_amount);
+                        float oldAmount = Float.parseFloat(amountTextView.getText().toString());
+                        float newAmount = (oldAmount / oldServings) * newServings;
+                        amountTextView.setText(String.valueOf(newAmount));
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public void uploadImage() {
