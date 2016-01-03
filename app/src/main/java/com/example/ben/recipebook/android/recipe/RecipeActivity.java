@@ -107,7 +107,11 @@ public class RecipeActivity extends ActionBarActivity {
     private void setRecipe(Recipe recipe) {
         this.recipe = recipe;
 
-        imageService.loadImageIntoView(image, recipe.ImageSource);
+        if (recipe.ImageSource != null && !recipe.ImageSource.isEmpty()) {
+            imageService.loadImageIntoView(image, recipe.ImageSource);
+        } else{
+            image.setVisibility(View.GONE);
+        }
         nameView.setText(recipe.Name);
         authorView.setText("By " + recipe.Author);
         servingsView.setText(Integer.toString(recipe.NumberOfServings));
