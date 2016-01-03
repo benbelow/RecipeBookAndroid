@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.MainActivity;
 import com.example.ben.recipebook.fetching.ImageUploadTask;
 import com.example.ben.recipebook.android.RecipeApplication;
 import com.example.ben.recipebook.services.S3ImageNamer;
@@ -170,8 +171,26 @@ public class RecipeActivity extends ActionBarActivity {
             return true;
         }
 
-        if(id == R.id.action_upload_image){
+        if (id == R.id.action_upload_image) {
             uploadImage();
+        }
+
+        if (id == R.id.action_delete_recipe) {
+            Call<Void> call = dataFetchingService.getService().deleteRecipe(recipe.Id);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Response<Void> response, Retrofit retrofit) {
+                    if (response.isSuccess()) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);

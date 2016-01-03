@@ -11,6 +11,7 @@ import com.example.ben.recipebook.models.recipe.Recipe;
 
 import retrofit.Call;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.PATCH;
 import retrofit.http.POST;
@@ -49,4 +50,7 @@ public interface RecipeService {
     Call<Recipe> patchRecipe(
             @Path("id") int recipeId,
             @Body JsonPatchDocument patchData);
+
+    @DELETE("api/recipes/{id}")
+    Call<Void> deleteRecipe(@Path("id") int recipeId);
 }
