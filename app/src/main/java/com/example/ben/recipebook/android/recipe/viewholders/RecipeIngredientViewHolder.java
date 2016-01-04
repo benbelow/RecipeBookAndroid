@@ -8,6 +8,8 @@ import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.ViewHolder;
 
+import java.text.DecimalFormat;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -28,9 +30,13 @@ public class RecipeIngredientViewHolder extends ViewHolder {
     @Bind(R.id.recipe_ingredient_comma)
     TextView commaView;
 
-    public RecipeIngredientViewHolder(Ingredient ingredient, View view) {
-        super(view);
+    public Ingredient ingredient;
+
+    public RecipeIngredientViewHolder(LayoutInflater inflater, Ingredient ingredient) {
+        super(inflater.inflate(R.layout.template_recipe_ingredient, null));
+        this.ingredient = ingredient;
         ButterKnife.bind(this, getView());
+        updateContent(ingredient);
     }
 
     @Override
@@ -50,5 +56,10 @@ public class RecipeIngredientViewHolder extends ViewHolder {
         if (ingredient.Units == null || ingredient.Units.isEmpty()) {
             unitsView.setVisibility(View.GONE);
         }
+    }
+
+    public void updateAmount(float newAmount) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        amountView.setText(decimalFormat.format(newAmount));
     }
 }

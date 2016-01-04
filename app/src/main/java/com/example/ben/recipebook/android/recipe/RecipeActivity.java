@@ -4,9 +4,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,24 +20,19 @@ import android.widget.TextView;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.MainActivity;
-import com.example.ben.recipebook.android.ViewHolder;
-import com.example.ben.recipebook.fetching.ImageUploadTask;
 import com.example.ben.recipebook.android.RecipeApplication;
-import com.example.ben.recipebook.services.S3ImageNamer;
-import com.example.ben.recipebook.services.TimeFormatter;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeEquipmentViewHolder;
-import com.example.ben.recipebook.android.recipe.viewholders.RecipeIngredientViewHolder;
 import com.example.ben.recipebook.android.recipe.viewholders.RecipeInstructionViewHolder;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.fetching.ImageService;
+import com.example.ben.recipebook.fetching.ImageUploadTask;
 import com.example.ben.recipebook.fetching.JsonPatchDocument;
 import com.example.ben.recipebook.fetching.JsonPatchOperation;
 import com.example.ben.recipebook.models.Equipment;
-import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.recipe.Instruction;
 import com.example.ben.recipebook.models.recipe.Recipe;
-
-import org.w3c.dom.Text;
+import com.example.ben.recipebook.services.S3ImageNamer;
+import com.example.ben.recipebook.services.TimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +63,9 @@ public class RecipeActivity extends ActionBarActivity {
 
     @Inject
     LayoutInflater inflater;
+
+    @Inject
+    RecipeIngredientAdapter ingredientAdapter;
 
     @Bind(R.id.recipe_author)
     TextView authorView;
@@ -112,7 +110,7 @@ public class RecipeActivity extends ActionBarActivity {
 
         if (recipe.ImageSource != null && !recipe.ImageSource.isEmpty()) {
             imageService.loadImageIntoView(image, recipe.ImageSource);
-        } else{
+        } else {
             image.setVisibility(View.GONE);
         }
         nameView.setText(recipe.Name);
@@ -122,9 +120,12 @@ public class RecipeActivity extends ActionBarActivity {
         int totalMinutes = recipe.PreparationTime + recipe.CookTime;
         totalTimeView.setText(TimeFormatter.format(totalMinutes));
 
-        for (Ingredient ingredient : recipe.Ingredients) {
-            addIngredientView(ingredient);
+        ingredientAdapter.setIngredients(recipe.Ingredients);
+
+        for (int i = 0; i < ingredientAdapter.getCount(); i++) {
+            ingredientList.addView(ingredientAdapter.getView(i, null, ingredientList));
         }
+
 
         for (Equipment equipment : recipe.Equipment) {
             addEquipmentView(equipment);
@@ -138,13 +139,6 @@ public class RecipeActivity extends ActionBarActivity {
     }
 
     //ToDo: make adapters for these things
-    private void addIngredientView(Ingredient ingredient) {
-        View ingredientView = inflater.inflate(R.layout.template_recipe_ingredient, ingredientList, false);
-        RecipeIngredientViewHolder viewHolder = new RecipeIngredientViewHolder(ingredient, ingredientView);
-        viewHolder.updateContent(ingredient);
-        ingredientList.addView(ingredientView);
-    }
-
     private void addEquipmentView(Equipment equipment) {
         View equipmentView = inflater.inflate(R.layout.template_recipe_equipment, equipmentList, false);
         RecipeEquipmentViewHolder viewHolder = new RecipeEquipmentViewHolder(equipment, equipmentView);
@@ -204,7 +198,7 @@ public class RecipeActivity extends ActionBarActivity {
     }
 
     @OnClick(R.id.recipe_scale_servings)
-    public void scaleServings(){
+    public void scaleServings() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_number_picker);
         dialog.setTitle("Servings");
@@ -220,18 +214,10 @@ public class RecipeActivity extends ActionBarActivity {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int oldServings = Integer.parseInt(servingsView.getText().toString());
                 int newServings = numberPicker.getValue();
                 servingsView.setText(String.valueOf(newServings));
-                for (int i = 0; i < ingredientList.getChildCount(); i++) {
-                    View ingredientView = ingredientList.getChildAt(i);
-                    if (ingredientView instanceof LinearLayout) {
-                        TextView amountTextView = (TextView) (ingredientView).findViewById(R.id.recipe_ingredient_amount);
-                        float oldAmount = Float.parseFloat(amountTextView.getText().toString());
-                        float newAmount = (oldAmount / oldServings) * newServings;
-                        amountTextView.setText(String.valueOf(newAmount));
-                    }
-                }
+                float scaleFactor = ((float) newServings) / recipe.NumberOfServings;
+                ingredientAdapter.scaleIngredientAmounts(scaleFactor);
                 dialog.dismiss();
             }
         });
