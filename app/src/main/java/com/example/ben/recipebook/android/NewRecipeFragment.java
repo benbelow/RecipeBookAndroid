@@ -123,13 +123,13 @@ public class NewRecipeFragment extends Fragment {
         createRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameView.getText().toString();
-                String description = descriptionView.getText().toString();
-                String mealType = mealTypeView.getText().toString();
+                String name = nameView.getText().toString().trim();
+                String description = descriptionView.getText().toString().trim();
+                String mealType = mealTypeView.getText().toString().trim();
                 int prepTime = Integer.parseInt(prepTimeView.getText().toString());
                 int cookTime = Integer.parseInt(cookTimeView.getText().toString());
                 int numberOfServings = Integer.parseInt(servingNumberView.getText().toString());
-                String author = authorView.getText().toString();
+                String author = authorView.getText().toString().trim();
                 List<Ingredient> ingredients = new ArrayList<>();
                 List<Equipment> equipments = new ArrayList<>();
                 List<Instruction> instructions = new ArrayList<>();
@@ -138,17 +138,17 @@ public class NewRecipeFragment extends Fragment {
                     View view = ingredientList.getChildAt(i);
                     if (view instanceof LinearLayout) {
                         AutoCompleteTextView nameView = (AutoCompleteTextView) view.findViewById(R.id.ingredient_name);
-                        String ingredientName = nameView.getText().toString();
+                        String ingredientName = nameView.getText().toString().trim();
 
                         EditText amountView = (EditText) view.findViewById(R.id.ingredient_amount);
                         String amountString = amountView.getText().toString();
                         int ingredientAmount = amountString.isEmpty() ? 0 : Integer.parseInt(amountString);
 
                         EditText unitsView = (EditText) view.findViewById(R.id.ingredient_units);
-                        String ingredientUnits = unitsView.getText().toString();
+                        String ingredientUnits = unitsView.getText().toString().trim();
 
                         EditText descriptionView = (EditText) view.findViewById(R.id.ingredient_description);
-                        String ingredientDescription = descriptionView.getText().toString();
+                        String ingredientDescription = descriptionView.getText().toString().trim();
 
                         Ingredient ingredient = new Ingredient(ingredientName, ingredientAmount, ingredientUnits, ingredientDescription);
                         ingredients.add(ingredient);
@@ -159,7 +159,7 @@ public class NewRecipeFragment extends Fragment {
                     View view = equipmentList.getChildAt(e);
                     if (view instanceof LinearLayout) {
                         AutoCompleteTextView nameView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
-                        String equipmentName = nameView.getText().toString();
+                        String equipmentName = nameView.getText().toString().trim();
 
                         Equipment equipment = new Equipment(equipmentName);
                         equipments.add(equipment);
@@ -170,7 +170,7 @@ public class NewRecipeFragment extends Fragment {
                     View view = instructionList.getChildAt(i);
                     if (view instanceof LinearLayout) {
                         EditText nameView = (EditText) view.findViewById(R.id.new_instruction);
-                        String instructionText = nameView.getText().toString();
+                        String instructionText = nameView.getText().toString().trim();
 
                         Instruction instruction = new Instruction(i + 1, instructionText);
                         instructions.add(instruction);
