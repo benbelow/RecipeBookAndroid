@@ -43,7 +43,7 @@ public class RecipeIngredientViewHolder extends ViewHolder {
     public void updateContent(Object item) {
         Ingredient ingredient = (Ingredient) item;
 
-        amountView.setText(Integer.toString(ingredient.Amount));
+        updateAmount(ingredient.Amount);
         unitsView.setText(ingredient.Units);
         nameView.setText(ingredient.Name);
         descriptionView.setText(ingredient.Description);
@@ -59,6 +59,10 @@ public class RecipeIngredientViewHolder extends ViewHolder {
     }
 
     public void updateAmount(float newAmount) {
+        if(newAmount == 0){
+            amountView.setVisibility(View.GONE);
+            return;
+        }
         DecimalFormat decimalFormat = new DecimalFormat("#.#");
         amountView.setText(decimalFormat.format(newAmount));
     }
