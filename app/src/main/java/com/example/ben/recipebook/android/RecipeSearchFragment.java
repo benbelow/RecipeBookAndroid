@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Switch;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.fetching.DataFetchingService;
@@ -27,6 +28,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -85,6 +87,18 @@ public class RecipeSearchFragment extends Fragment {
 
     @Bind(R.id.recipe_search_min_servings)
     NumberPicker minServingsSearch;
+
+    @Bind(R.id.search_restrict_container)
+    LinearLayout restrictContainer;
+
+    @Bind(R.id.restrict_image)
+    ImageView restrictImage;
+
+    @Bind(R.id.restrict_ingredient_toggle)
+    Switch restrictIngredients;
+
+    @Bind(R.id.restrict_equipment_toggle)
+    Switch restrictEquipment;
 
     public static RecipeSearchFragment newInstance() {
         RecipeSearchFragment fragment = new RecipeSearchFragment();
@@ -148,6 +162,17 @@ public class RecipeSearchFragment extends Fragment {
 
 
         return view;
+    }
+
+    @OnClick(R.id.restrict_header)
+    public void setUpCollapsingRestrictHeader(){
+        if (restrictContainer.getVisibility() == View.VISIBLE) {
+            restrictImage.setImageResource(R.drawable.expand_arrow);
+            restrictContainer.setVisibility(View.GONE);
+        } else {
+            restrictImage.setImageResource(R.drawable.collapse_arrow);
+            restrictContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setUpNumberPicker(NumberPicker picker, String[] displayedValues) {
