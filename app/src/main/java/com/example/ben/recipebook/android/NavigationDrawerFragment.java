@@ -1,5 +1,6 @@
 package com.example.ben.recipebook.android;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -20,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.example.ben.recipebook.R;
 
 /**
@@ -250,11 +251,16 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+            performExampleAction();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void performExampleAction() {
+        Intent intent = new Intent(getActivity(), SignInActivity.class);
+        startActivity(intent);
     }
 
     /**

@@ -32,6 +32,10 @@
             android:name=".android.RecipeSearchResultsActivity"
             android:label="@string/title_activity_recipe_search_results" >
         </activity>
+        <activity
+            android:name=".android.SignInActivity"
+            android:label="@string/title_activity_sign_in" >
+        </activity>
     </application>
 
 </manifest>

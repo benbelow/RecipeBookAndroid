@@ -175,9 +175,11 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
-            Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
-            recipeIntent.putExtra("Recipe", allRecipes.get(position));
-            startActivity(recipeIntent);
+//            Intent recipeIntent = new Intent(getActivity(), RecipeActivity.class);
+//            recipeIntent.putExtra("Recipe", allRecipes.get(position));
+//            startActivity(recipeIntent);
+//            Intent recipeIntent = new Intent(getActivity(), SignInActivity.class);
+//            startActivity(recipeIntent);
         }
     }
 

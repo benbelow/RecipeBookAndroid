@@ -1,0 +1,51 @@
+{
+  "project_info": {
+    "project_id": "recipeapi-1180",
+    "project_number": "238308584955",
+    "name": "RecipeAPI"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238308584955:android:805e4e34e62f2209",
+        "client_id": "android:com.example.ben.recipebook",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.ben.recipebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238308584955-ebj29e3bbp7p3f8s9da3t372sd0j5859.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ben.recipebook",
+            "certificate_hash": "03A3BEEA101073C81DE7005E240B888B92D6EC16"
+          }
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
