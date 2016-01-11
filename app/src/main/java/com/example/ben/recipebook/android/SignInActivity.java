@@ -2,6 +2,7 @@ package com.example.ben.recipebook.android;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.fetching.DataFetchingService;
+import com.example.ben.recipebook.fetching.TokenDetails;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -22,6 +25,14 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 
+import java.io.IOException;
+
+import javax.inject.Inject;
+
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -29,15 +40,25 @@ public class SignInActivity extends AppCompatActivity implements
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    private String accessTokenKey = "com.example.app.apiAccessToken";
+    private String refreshTokenKey = "com.example.app.apiRefreshToken";
+
     private GoogleApiClient mGoogleApiClient;
     private TextView mAuthCodeTextView;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
     private java.lang.String serverClientId = "238308584955-f5megnjst1pq4a6s0n6iq4o2dm2biv47.apps.googleusercontent.com";
 
+    @Inject
+    public DataFetchingService fetchingService;
+
+    @Inject
+    public SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((RecipeApplication) getApplication()).getApplicationComponent().inject(this);
         setContentView(R.layout.activity_sign_in);
 
         // Views
@@ -129,6 +150,24 @@ public class SignInActivity extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             String authCode = acct.getServerAuthCode();
+
+            fetchingService.getService().googleLogin(acct.getIdToken()).enqueue(new Callback<TokenDetails>() {
+                @Override
+                public void onResponse(Response<TokenDetails> response, Retrofit retrofit) {
+                    if (response.isSuccess()) {
+                        TokenDetails tokenDetails = response.body();
+                        sharedPreferences.edit().putString(accessTokenKey, tokenDetails.AccessToken).apply();
+                        sharedPreferences.edit().putString(refreshTokenKey, tokenDetails.RefreshToken).apply();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
+
+
             mAuthCodeTextView.setText("Id token: " + acct.getIdToken() + "again: " + acct.getIdToken());
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
