@@ -13,6 +13,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
+import retrofit.http.Header;
 import retrofit.http.PATCH;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -21,9 +22,16 @@ import retrofit.http.QueryMap;
 
 public interface RecipeService {
 
+    @POST("api/auth/googlelogin")
+    Call<TokenDetails> googleLogin(
+            @Query("googleIdToken") String googleIdToken);
+
+    @POST("api/auth/refresh")
+    Call<TokenDetails> refreshToken(
+            @Body RefreshToken refreshTokenDetails);
+
     @GET("/api/ingredients")
     Call<List<Ingredient>> listIngredients();
-
 
     //ToDo: See if there's a nicer way to avoid passing in nulls, c.f. default values or a better Map
     @GET("/api/recipes")

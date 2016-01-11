@@ -20,6 +20,8 @@ import retrofit.Retrofit;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 public class IngredientFragment extends Fragment implements AbsListView.OnItemClickListener {
 
@@ -30,6 +32,9 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
     private ListAdapter mAdapter;
 
     private ArrayList<String> ingredientNames = new ArrayList<>();
+
+    @Inject
+    public DataFetchingService service;
 
     public static IngredientFragment newInstance() {
         IngredientFragment fragment = new IngredientFragment();
@@ -56,8 +61,6 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
-        //ToDo: Add dagger DI
-        DataFetchingService service = new DataFetchingService();
         Call<List<Ingredient>> call = service.getService().listIngredients();
 
         call.enqueue(new Callback<List<Ingredient>>() {
