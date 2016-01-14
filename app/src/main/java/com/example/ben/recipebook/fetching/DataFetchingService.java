@@ -20,8 +20,7 @@ import retrofit.Retrofit;
 public class DataFetchingService {
 
     //ToDo: Make a config file
-//    private String baseUrl = "http://52.35.36.23/";
-    private String baseUrl = "http://8cde5ee3.ngrok.io/";
+    private String baseUrl = "http://52.35.36.23/";
 
     private SharedPreferences sharedPreferences;
 

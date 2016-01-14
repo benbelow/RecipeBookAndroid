@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity
                 fragmentTransaction.replace(R.id.container, RecipeSearchFragment.newInstance()).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.container, OwnedRecipeSearchFragment.newInstance()).commit();
+                fragmentTransaction.replace(R.id.container, StoreCupboardIngredientFragment.newInstance()).commit();
                 break;
             case 3:
                 fragmentTransaction.replace(R.id.container, NewRecipeFragment.newInstance()).commit();

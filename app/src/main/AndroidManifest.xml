@@ -36,6 +36,15 @@
             android:name=".android.SignInActivity"
             android:label="@string/title_activity_sign_in" >
         </activity>
+        <activity
+            android:name=".android.StoreCupboardActivity"
+            android:label="@string/title_activity_store_cupboard"
+            android:parentActivityName=".android.MainActivity"
+            android:windowSoftInputMode="adjustPan"> >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ben.recipebook.android.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

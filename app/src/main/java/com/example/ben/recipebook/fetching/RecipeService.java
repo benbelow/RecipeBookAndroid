@@ -2,18 +2,16 @@ package com.example.ben.recipebook.fetching;
 
 import com.example.ben.recipebook.models.Equipment;
 import com.example.ben.recipebook.models.Ingredient;
+import com.example.ben.recipebook.models.StoreCupboard;
+import com.example.ben.recipebook.models.recipe.Recipe;
 
 import java.util.List;
 import java.util.Map;
-
-import com.example.ben.recipebook.models.recipe.NewRecipeBody;
-import com.example.ben.recipebook.models.recipe.Recipe;
 
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.PATCH;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -21,6 +19,8 @@ import retrofit.http.Query;
 import retrofit.http.QueryMap;
 
 public interface RecipeService {
+
+    // Authentication
 
     @POST("api/auth/googlelogin")
     Call<TokenDetails> googleLogin(
@@ -30,8 +30,7 @@ public interface RecipeService {
     Call<TokenDetails> refreshToken(
             @Body RefreshToken refreshTokenDetails);
 
-    @GET("/api/ingredients")
-    Call<List<Ingredient>> listIngredients();
+    // Recipes
 
     //ToDo: See if there's a nicer way to avoid passing in nulls, c.f. default values or a better Map
     @GET("/api/recipes")
@@ -47,9 +46,6 @@ public interface RecipeService {
             @Query("requiredIngredients") List<String> requiredIngredients,
             @Query("equipment") List<String> equipment);
 
-    @GET("/api/equipment")
-    Call<List<Equipment>> listEquipment();
-
     @POST("/api/recipes")
     Call<Recipe> postRecipe(
             @Body Recipe body);
@@ -61,4 +57,24 @@ public interface RecipeService {
 
     @DELETE("api/recipes/{id}")
     Call<Void> deleteRecipe(@Path("id") int recipeId);
+
+    // Ingredient Components
+
+    @GET("/api/ingredients")
+    Call<List<Ingredient>> listIngredients();
+
+    @GET("/api/equipment")
+    Call<List<Equipment>> listEquipment();
+
+    @GET("/api/storeCupboard")
+    Call<StoreCupboard> storeCupboard();
+
+    @POST("api/storeCupboard/ingredients")
+    Call<StoreCupboard> postStoreCupboardIngredients(
+            @Body List<String> ingredientNames);
+
+    @POST("api/storeCupboard/equipments")
+    Call<StoreCupboard> postStoreCupboardEquipments(
+            @Body List<String> equipmentNames);
+
 }

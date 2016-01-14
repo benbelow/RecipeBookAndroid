@@ -177,7 +177,6 @@ public class NewRecipeFragment extends Fragment {
                     }
                 }
 
-
                 Recipe newRecipe = new Recipe(0, name, description, mealType, author, null, numberOfServings, cookTime, prepTime, ingredients, equipments, instructions);
 
                 Call<Recipe> postCall = fetchingService.getService().postRecipe(newRecipe);

@@ -41,43 +41,6 @@
             android:orientation="vertical"
             android:paddingBottom="8dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/SearchSectionHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Equipment" />
-
-            <ImageButton
-                android:id="@+id/add_search_equipment"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:paddingLeft="4dp"
-                android:src="@drawable/plus" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/recipe_search_equipment_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="8dp" />
-
-        <ImageButton
-            android:id="@+id/recipe_search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:padding="12dp"
-            android:src="@drawable/search" />
-
     </LinearLayout>
 
 </ScrollView>
