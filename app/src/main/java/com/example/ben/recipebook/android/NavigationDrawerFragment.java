@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.models.StoreCupboard;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -250,15 +251,25 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            performExampleAction();
+        if (item.getItemId() == R.id.open_login_activity) {
+            openLoginActivity();
+            return true;
+        }
+
+        if (item.getItemId() == R.id.open_store_cupboard) {
+            openStoreCupboard();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void performExampleAction() {
+    private void openStoreCupboard() {
+        Intent intent = new Intent(getActivity(), StoreCupboardActivity.class);
+        startActivity(intent);
+    }
+
+    private void openLoginActivity() {
         Intent intent = new Intent(getActivity(), SignInActivity.class);
         startActivity(intent);
     }
