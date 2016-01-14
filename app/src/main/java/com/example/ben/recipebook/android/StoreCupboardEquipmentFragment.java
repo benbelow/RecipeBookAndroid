@@ -29,7 +29,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class StoreCupboardEquipmentFragment extends Fragment {
+public class StoreCupboardEquipmentFragment extends Fragment implements Saveable {
 
     private LayoutInflater inflater;
 
@@ -121,33 +121,6 @@ public class StoreCupboardEquipmentFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        List<String> equipmentNames = new ArrayList<>();
-        for (int i = 0; i < equipmentList.getChildCount(); i++) {
-            View view = equipmentList.getChildAt(i);
-            if (view instanceof LinearLayout) {
-                AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
-                String equipmentName = textView.getText().toString();
-                equipmentNames.add(equipmentName);
-            }
-        }
-
-        fetchingService.getService().postStoreCupboardEquipments(equipmentNames).enqueue(new Callback<StoreCupboard>() {
-            @Override
-            public void onResponse(Response<StoreCupboard> response, Retrofit retrofit) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
-
     private void fetchEquipmentList() {
         Call<List<Equipment>> equipmentCall = fetchingService.getService().listEquipment();
         equipmentCall.enqueue(new Callback<List<Equipment>>() {
@@ -191,6 +164,32 @@ public class StoreCupboardEquipmentFragment extends Fragment {
                         layout.removeView(newSearchTermLayout);
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    public void save() {
+
+        List<String> equipmentNames = new ArrayList<>();
+        for (int i = 0; i < equipmentList.getChildCount(); i++) {
+            View view = equipmentList.getChildAt(i);
+            if (view instanceof LinearLayout) {
+                AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
+                String equipmentName = textView.getText().toString();
+                equipmentNames.add(equipmentName);
+            }
+        }
+
+        fetchingService.getService().postStoreCupboardEquipments(equipmentNames).enqueue(new Callback<StoreCupboard>() {
+            @Override
+            public void onResponse(Response<StoreCupboard> response, Retrofit retrofit) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
     }

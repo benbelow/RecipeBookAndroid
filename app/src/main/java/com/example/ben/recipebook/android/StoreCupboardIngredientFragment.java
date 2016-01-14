@@ -29,7 +29,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class StoreCupboardIngredientFragment extends Fragment {
+public class StoreCupboardIngredientFragment extends Fragment implements Saveable {
 
     private LayoutInflater inflater;
 
@@ -121,33 +121,6 @@ public class StoreCupboardIngredientFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        List<String> ingredientNames = new ArrayList<>();
-        for (int i = 0; i < ingredientList.getChildCount(); i++) {
-            View view = ingredientList.getChildAt(i);
-            if (view instanceof LinearLayout) {
-                AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
-                String ingredientName = textView.getText().toString();
-                ingredientNames.add(ingredientName);
-            }
-        }
-
-        fetchingService.getService().postStoreCupboardIngredients(ingredientNames).enqueue(new Callback<StoreCupboard>() {
-            @Override
-            public void onResponse(Response<StoreCupboard> response, Retrofit retrofit) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
-
     private void fetchIngredientList() {
         Call<List<Ingredient>> ingredientsCall = fetchingService.getService().listIngredients();
         ingredientsCall.enqueue(new Callback<List<Ingredient>>() {
@@ -191,6 +164,31 @@ public class StoreCupboardIngredientFragment extends Fragment {
                         layout.removeView(newSearchTermLayout);
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    public void save() {
+        List<String> ingredientNames = new ArrayList<>();
+        for (int i = 0; i < ingredientList.getChildCount(); i++) {
+            View view = ingredientList.getChildAt(i);
+            if (view instanceof LinearLayout) {
+                AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
+                String ingredientName = textView.getText().toString();
+                ingredientNames.add(ingredientName);
+            }
+        }
+
+        fetchingService.getService().postStoreCupboardIngredients(ingredientNames).enqueue(new Callback<StoreCupboard>() {
+            @Override
+            public void onResponse(Response<StoreCupboard> response, Retrofit retrofit) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
     }

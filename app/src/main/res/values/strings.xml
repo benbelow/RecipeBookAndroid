@@ -60,5 +60,6 @@
     <string name="title_activity_sign_in">Sign In</string>
     <string name="title_activity_store_cupboard">Store Cupboard</string>
     <string name="open_store_cupboard">Store Cupboard</string>
+    <string name="save_store_cupboard">Save</string>
 
 </resources>
