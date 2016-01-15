@@ -58,10 +58,8 @@ public class MainActivity extends ActionBarActivity
                 fragmentTransaction.replace(R.id.container, RecipeSearchFragment.newInstance()).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.container, StoreCupboardIngredientFragment.newInstance()).commit();
-                break;
-            case 3:
                 fragmentTransaction.replace(R.id.container, NewRecipeFragment.newInstance()).commit();
+                break;
         }
 
     }
@@ -77,8 +75,6 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
         }
     }
 

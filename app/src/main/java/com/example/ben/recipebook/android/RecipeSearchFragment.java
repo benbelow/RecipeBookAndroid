@@ -266,7 +266,9 @@ public class RecipeSearchFragment extends Fragment {
                 searchTerms.maxTime = (maxTotalTime);
                 searchTerms.minServings = (Integer.parseInt(minServings));
                 searchTerms.ingredients = (ingredientsAll);
-                searchTerms.equipments = (equipment);
+                searchTerms.equipment = (equipment);
+                searchTerms.restrictIngredients = restrictIngredients.isChecked();
+                searchTerms.restrictEquipment = restrictEquipment.isChecked();
 
                 Intent recipeSearchResultsIntent = new Intent(getActivity(), RecipeSearchResultsActivity.class);
                 recipeSearchResultsIntent.putExtra("searchTerms", searchTerms);

@@ -36,8 +36,7 @@ public interface RecipeService {
     @GET("/api/recipes")
     Call<List<Recipe>> listRecipes(
             @QueryMap Map<String, String> options,
-            @Query("ingredientsAny") List<String> ingredientsAny,
-            @Query("ingredientsAll") List<String> ingredientsAll,
+            @Query("ingredients") List<String> ingredients,
             @Query("equipment") List<String> equipment);
 
     @GET("/api/recipes/with")

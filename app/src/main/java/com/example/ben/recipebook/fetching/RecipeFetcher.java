@@ -23,22 +23,27 @@ public class RecipeFetcher implements IListFetcher<Recipe> {
         Map<String, String> searchOptions = new HashMap<>();
 
         if (!searchTerms.name.isEmpty()) {
-
             searchOptions.put("name", searchTerms.name);
         }
 
         if (searchTerms.maxTime > 0) {
-
             searchOptions.put("maxTotalTime", searchTerms.maxTime.toString());
         }
 
         if (searchTerms.minServings > 1) {
-
             searchOptions.put("minNumberOfServings", searchTerms.minServings.toString());
+        }
+
+        if (searchTerms.restrictIngredients) {
+            searchOptions.put("restrictIngredients", "true");
+        }
+
+        if (searchTerms.restrictEquipment) {
+            searchOptions.put("restrictEquipment", "true");
         }
 
         searchOptions.put("limit", searchTerms.limit.toString());
 
-        return service.listRecipes(searchOptions, null, searchTerms.ingredients, searchTerms.equipments);
+        return service.listRecipes(searchOptions, searchTerms.ingredients, searchTerms.equipment);
     }
 }

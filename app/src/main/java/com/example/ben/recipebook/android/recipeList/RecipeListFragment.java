@@ -1,7 +1,6 @@
 package com.example.ben.recipebook.android.recipeList;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +14,9 @@ import android.widget.LinearLayout;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.android.RecipeApplication;
-import com.example.ben.recipebook.android.recipe.RecipeActivity;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.fetching.IListFetcher;
 import com.example.ben.recipebook.fetching.ImageService;
-import com.example.ben.recipebook.fetching.OwnedRecipeFetcher;
-import com.example.ben.recipebook.fetching.OwnedRecipeSearchTerms;
 import com.example.ben.recipebook.fetching.RecipeFetcher;
 import com.example.ben.recipebook.fetching.RecipeSearchTerms;
 import com.example.ben.recipebook.models.recipe.Recipe;
@@ -113,8 +109,6 @@ public class RecipeListFragment extends Fragment implements AbsListView.OnItemCl
 
         if (searchTerms instanceof RecipeSearchTerms) {
             fetcher = new RecipeFetcher(fetchingService, (RecipeSearchTerms) searchTerms);
-        } else if (searchTerms instanceof OwnedRecipeSearchTerms) {
-            fetcher = new OwnedRecipeFetcher(fetchingService, (OwnedRecipeSearchTerms) searchTerms);
         } else {
             fetcher = new RecipeFetcher(fetchingService, new RecipeSearchTerms());
         }
