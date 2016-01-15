@@ -2,6 +2,7 @@ package com.example.ben.recipebook.android;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,7 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
     SharedPreferences sharedPreferences;
 
     @Bind(R.id.add_search_ingredient)
-    ImageButton addSearchIngredientButton;
+    FloatingActionButton addSearchIngredientButton;
 
     @Bind(R.id.recipe_search_ingredient_list)
     LinearLayout ingredientList;
@@ -142,7 +143,7 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         });
     }
 
-    private void setUpAddSearchTermButton(ImageButton button, final LinearLayout layout, final ArrayAdapter adapter) {
+    private void setUpAddSearchTermButton(FloatingActionButton button, final LinearLayout layout, final ArrayAdapter adapter) {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

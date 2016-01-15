@@ -132,7 +132,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="4dp"
-                android:src="@drawable/plus" />
+                android:src="@drawable/plus_in_circle" />
 
         </LinearLayout>
 
@@ -161,7 +161,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="4dp"
-                android:src="@drawable/plus" />
+                android:src="@drawable/plus_in_circle" />
 
         </LinearLayout>
 
@@ -191,7 +191,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="4dp"
-                android:src="@drawable/plus" />
+                android:src="@drawable/plus_in_circle" />
 
         </LinearLayout>
 
