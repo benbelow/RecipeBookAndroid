@@ -4,15 +4,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.ben.recipebook.R;
+import com.example.ben.recipebook.android.recipeList.RecipeCardViewHolder;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.StoreCupboard;
@@ -37,17 +39,22 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
     private List<String> ingredientNames = new ArrayList<>();
     private ArrayAdapter ingredientNamesAdapter;
 
+    private List<String> ingredients = new ArrayList<>();
+
     @Inject
     DataFetchingService fetchingService;
 
     @Inject
     SharedPreferences sharedPreferences;
 
+    @Inject
+    StoreCupboardItemAdapter ingredientAdapter;
+
     @Bind(R.id.add_search_ingredient)
     FloatingActionButton addSearchIngredientButton;
 
-    @Bind(R.id.recipe_search_ingredient_list)
-    LinearLayout ingredientList;
+    @Bind(R.id.ingredients)
+    RecyclerView ingredientList;
 
     public static StoreCupboardIngredientFragment newInstance() {
         StoreCupboardIngredientFragment fragment = new StoreCupboardIngredientFragment();
@@ -68,8 +75,11 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         ButterKnife.bind(this, view);
         this.inflater = inflater;
 
+        ingredientList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        ingredientList.setAdapter(ingredientAdapter);
+
         fetchIngredientList();
-        setUpAddSearchTermButton(addSearchIngredientButton, ingredientList, ingredientNamesAdapter);
+        setUpAddSearchTermButton(addSearchIngredientButton, ingredientNamesAdapter);
 
         final List<String> savedIngredients = new ArrayList<>();
 
@@ -86,8 +96,11 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
                     Collections.reverse(savedIngredients);
 
                     if (!savedIngredients.isEmpty()) {
-                        addViewsForSavedSearchTerms(savedIngredients, ingredientList, ingredientNamesAdapter);
+                        addViewsForSavedSearchTerms(savedIngredients, ingredientNamesAdapter);
                     }
+
+                    ingredientAdapter.setItems(savedIngredients);
+                    ingredientAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -100,25 +113,16 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         return view;
     }
 
-    private void addViewsForSavedSearchTerms(List<String> savedStrings, final LinearLayout layout, ArrayAdapter adapter) {
+    private void addViewsForSavedSearchTerms(List<String> savedStrings, ArrayAdapter adapter) {
         for (String s : savedStrings) {
             final LinearLayout newSearchTermLayout = (LinearLayout) this.inflater.inflate(R.layout.template_search_item, null);
             final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
 
             autoCompleteTextView.setAdapter(adapter);
 
-            layout.addView(newSearchTermLayout, 0);
+            ingredients.add("saved");
 
             autoCompleteTextView.setText(s);
-
-            ImageButton removeButton = (ImageButton) newSearchTermLayout.findViewById(R.id.remove_search_item);
-            removeButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    layout.removeView(newSearchTermLayout);
-                }
-            });
         }
     }
 
@@ -143,7 +147,7 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         });
     }
 
-    private void setUpAddSearchTermButton(FloatingActionButton button, final LinearLayout layout, final ArrayAdapter adapter) {
+    private void setUpAddSearchTermButton(FloatingActionButton button, final ArrayAdapter adapter) {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,34 +158,16 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
 
                 view.setAdapter(adapter);
 
-                layout.addView(newSearchTermLayout, 0);
+                ingredients.add("string");
                 newSearchTermLayout.requestFocus();
-
-                ImageButton removeButton = (ImageButton) newSearchTermLayout.findViewById(R.id.remove_search_item);
-                removeButton.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        layout.removeView(newSearchTermLayout);
-                    }
-                });
             }
         });
     }
 
     @Override
     public void save() {
-        List<String> ingredientNames = new ArrayList<>();
-        for (int i = 0; i < ingredientList.getChildCount(); i++) {
-            View view = ingredientList.getChildAt(i);
-            if (view instanceof LinearLayout) {
-                AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.search_item);
-                String ingredientName = textView.getText().toString();
-                ingredientNames.add(ingredientName);
-            }
-        }
 
-        fetchingService.getService().postStoreCupboardIngredients(ingredientNames).enqueue(new Callback<StoreCupboard>() {
+        fetchingService.getService().postStoreCupboardIngredients(ingredientAdapter.getItems()).enqueue(new Callback<StoreCupboard>() {
             @Override
             public void onResponse(Response<StoreCupboard> response, Retrofit retrofit) {
 
