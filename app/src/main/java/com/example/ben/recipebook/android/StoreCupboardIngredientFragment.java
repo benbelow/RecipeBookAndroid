@@ -1,5 +1,6 @@
 package com.example.ben.recipebook.android;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 
 import com.example.ben.recipebook.R;
-import com.example.ben.recipebook.android.recipeList.RecipeCardViewHolder;
 import com.example.ben.recipebook.fetching.DataFetchingService;
 import com.example.ben.recipebook.models.Ingredient;
 import com.example.ben.recipebook.models.StoreCupboard;
@@ -27,6 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -50,7 +53,7 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
     @Inject
     StoreCupboardItemAdapter ingredientAdapter;
 
-    @Bind(R.id.add_search_ingredient)
+    @Bind(R.id.add_ingredient)
     FloatingActionButton addSearchIngredientButton;
 
     @Bind(R.id.ingredients)
@@ -79,7 +82,6 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         ingredientList.setAdapter(ingredientAdapter);
 
         fetchIngredientList();
-        setUpAddSearchTermButton(addSearchIngredientButton, ingredientNamesAdapter);
 
         final List<String> savedIngredients = new ArrayList<>();
 
@@ -147,22 +149,36 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         });
     }
 
-    private void setUpAddSearchTermButton(FloatingActionButton button, final ArrayAdapter adapter) {
+    @OnClick(R.id.add_ingredient)
+    public void addNewIngredient(){
+        final Dialog dialog = new Dialog(this.getActivity());
+        dialog.setContentView(R.layout.dialog_new_store_cupboard_item);
+        dialog.setTitle("New Ingredient");
+        Button setButton = (Button) dialog.findViewById(R.id.set);
+        Button cancelButton = (Button) dialog.findViewById(R.id.cancel);
+        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialog.findViewById(R.id.new_item_name);
+        autoCompleteTextView.setAdapter(ingredientNamesAdapter);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                final LinearLayout newSearchTermLayout = (LinearLayout) inflater.inflate(R.layout.template_search_item, null);
-                final AutoCompleteTextView view = (AutoCompleteTextView) newSearchTermLayout.findViewById(R.id.search_item);
-
-                view.setAdapter(adapter);
-
-                ingredients.add("string");
-                newSearchTermLayout.requestFocus();
+                ingredientAdapter.addItem(autoCompleteTextView.getText().toString());
+                ingredientList.smoothScrollToPosition(ingredientAdapter.getItemCount() - 1);
+                dialog.dismiss();
             }
         });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
+
+
 
     @Override
     public void save() {

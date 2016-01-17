@@ -27,7 +27,8 @@ public class StoreCupboardItemAdapter extends RecyclerView.Adapter<StoreCupboard
     }
 
     public void addItem(String item) {
-
+        items.add(item);
+        notifyItemInserted(items.size() - 1);
     }
 
     @Override

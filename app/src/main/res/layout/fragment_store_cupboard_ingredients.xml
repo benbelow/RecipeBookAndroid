@@ -11,7 +11,7 @@
         android:id="@+id/ingredients" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_search_ingredient"
+        android:id="@+id/add_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
