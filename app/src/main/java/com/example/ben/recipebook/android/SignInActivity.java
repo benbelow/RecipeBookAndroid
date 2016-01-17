@@ -44,7 +44,6 @@ public class SignInActivity extends AppCompatActivity implements
     private String refreshTokenKey = "com.example.app.apiRefreshToken";
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView mAuthCodeTextView;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
     private java.lang.String serverClientId = "238308584955-f5megnjst1pq4a6s0n6iq4o2dm2biv47.apps.googleusercontent.com";
@@ -63,7 +62,6 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
-        mAuthCodeTextView = (TextView) findViewById(R.id.authCode);
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -167,8 +165,6 @@ public class SignInActivity extends AppCompatActivity implements
                 }
             });
 
-
-            mAuthCodeTextView.setText("Id token: " + acct.getIdToken() + "again: " + acct.getIdToken());
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
         } else {
