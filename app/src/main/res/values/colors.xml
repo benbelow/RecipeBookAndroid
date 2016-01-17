@@ -11,11 +11,25 @@
     <color name="light_blue_700">#0288D1</color>
     <color name="light_blue_800">#0277BD</color>
     <color name="light_blue_900">#01579B</color>
+    <color name="deep_purple_50">#EDE7F6</color>
+    <color name="deep_purple_200">#B39DDB</color>
+    <color name="deep_purple_300">#9575CD</color>
+    <color name="deep_purple_500">#673AB7</color>
+    <color name="deep_purple_600">#5E35B1</color>
+    <color name="deep_purple_700">#512DA8</color>
+    <color name="deep_purple_800">#4527A0</color>
+    <color name="deep_purple_900">#311B92</color>
     <color name="orange_500">#FF9800</color>
     <color name="orange_600">#FB8C00</color>
     <color name="orange_700">#F57C00</color>
     <color name="orange_800">#EF6C00</color>
     <color name="orange_900">#E65100</color>
+
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="primary">@color/light_blue_500</color>
+    <color name="primary_dark">@color/light_blue_900</color>
+    <color name="primary_light">@color/light_blue_50</color>
+    <color name="accent">@color/deep_purple_200</color>
 </resources>
