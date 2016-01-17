@@ -10,14 +10,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/ingredients" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_ingredient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:src="@drawable/plus"
-        app:layout_anchor="@id/ingredients"
-        app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>
