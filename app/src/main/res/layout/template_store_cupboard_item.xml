@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:foreground="?android:attr/selectableItemBackground"
     android:id="@+id/store_cupboard_item">
 
         <TextView
@@ -17,4 +18,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
-</LinearLayout>
+    <View
+        android:id="@+id/selected_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/accent_overlay"
+        android:visibility="invisible" />
+
+</FrameLayout>

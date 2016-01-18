@@ -5,9 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -36,9 +41,12 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class StoreCupboardIngredientFragment extends Fragment implements Saveable {
+public class StoreCupboardIngredientFragment extends Fragment implements Saveable,
+        StoreCupboardItemViewHolder.ClickListener {
 
     private LayoutInflater inflater;
+    private ActionModeCallback actionModeCallback = new ActionModeCallback();
+    private ActionMode actionMode;
 
     private List<String> ingredientNames = new ArrayList<>();
     private ArrayAdapter ingredientNamesAdapter;
@@ -49,7 +57,6 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
     @Inject
     SharedPreferences sharedPreferences;
 
-    @Inject
     StoreCupboardItemAdapter ingredientAdapter;
 
     @Bind(R.id.ingredients)
@@ -65,6 +72,7 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         super.onCreate(savedInstanceState);
         ((RecipeApplication) getActivity().getApplication()).getApplicationComponent().inject(this);
 
+        ingredientAdapter = new StoreCupboardItemAdapter(this);
         ingredientNamesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, ingredientNames);
     }
 
@@ -171,5 +179,70 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
 
             }
         });
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        if (actionMode != null) {
+            toggleSelection(position);
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        if (actionMode == null) {
+            actionMode = ((ActionBarActivity)this.getActivity()).startSupportActionMode(actionModeCallback);
+        }
+
+        toggleSelection(position);
+
+        return true;
+    }
+
+    private void toggleSelection(int position) {
+        ingredientAdapter.toggleSelection(position);
+        int count = ingredientAdapter.getSelectedItemCount();
+
+        if (count == 0) {
+            actionMode.finish();
+        } else {
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
+        }
+    }
+
+    private class ActionModeCallback implements ActionMode.Callback {
+        @SuppressWarnings("unused")
+        private final String TAG = ActionModeCallback.class.getSimpleName();
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate (R.menu.selected_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_remove:
+                    ingredientAdapter.removeItems(ingredientAdapter.getSelectedItems());
+                    mode.finish();
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            ingredientAdapter.clearSelection();
+            actionMode = null;
+        }
     }
 }

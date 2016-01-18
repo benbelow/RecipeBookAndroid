@@ -229,6 +229,7 @@
     <color name="teal_900">#004D40</color>
     <color name="teal_A100">#A7FFEB</color>
     <color name="teal_A200">#64FFDA</color>
+    <color name="teal_A200_transparent">#8864FFDA</color>
     <color name="teal_A400">#1DE9B6</color>
     <color name="teal_A700">#00BFA5</color>
 
@@ -280,4 +281,5 @@
     <color name="primary_dark">@color/blue_700</color>
     <color name="primary_light">@color/blue_50</color>
     <color name="accent">@color/teal_A200</color>
+    <color name="accent_overlay">@color/teal_A200_transparent</color>
 </resources>
