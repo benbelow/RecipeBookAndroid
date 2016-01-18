@@ -36,9 +36,7 @@ public class StoreCupboardItemAdapter extends SelectableAdapter<StoreCupboardIte
     public void removeItem(int position) {
         items.remove(position);
         notifyItemRemoved(position);
-        for(int i = position; i < items.size() + 1; i++){
-            notifyItemChanged(i);
-        }
+        notifyItemRangeChanged(position, items.size());
     }
 
     public void removeItems(List<Integer> positions) {
@@ -79,9 +77,7 @@ public class StoreCupboardItemAdapter extends SelectableAdapter<StoreCupboardIte
             items.remove(positionStart);
         }
         notifyItemRangeRemoved(positionStart, itemCount);
-        for(int i = positionStart + itemCount; i < items.size() + 1; i++){
-            notifyItemChanged(i);
-        }
+        notifyItemRangeChanged(positionStart, items.size());
     }
 
     @Override
