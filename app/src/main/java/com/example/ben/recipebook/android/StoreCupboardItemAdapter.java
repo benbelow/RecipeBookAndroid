@@ -1,6 +1,5 @@
 package com.example.ben.recipebook.android;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class StoreCupboardItemAdapter extends SelectableAdapter<StoreCupboardItemViewHolder>{
 
     private List<String> items = Collections.emptyList();
-    private StoreCupboardItemViewHolder.ClickListener clickListener;
+    private ClickListener clickListener;
 
-    public StoreCupboardItemAdapter(StoreCupboardItemViewHolder.ClickListener clickListener) {
+    public StoreCupboardItemAdapter(ClickListener clickListener) {
         super();
         this.clickListener = clickListener;
     }

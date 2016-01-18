@@ -3,24 +3,19 @@ package com.example.ben.recipebook.android;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.example.ben.recipebook.R;
 import com.example.ben.recipebook.fetching.DataFetchingService;
@@ -35,16 +30,14 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
 public class StoreCupboardIngredientFragment extends Fragment implements Saveable,
-        StoreCupboardItemViewHolder.ClickListener {
+        ClickListener {
 
-    private LayoutInflater inflater;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private ActionMode actionMode;
 
@@ -62,11 +55,6 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
     @Bind(R.id.ingredients)
     RecyclerView ingredientList;
 
-    public static StoreCupboardIngredientFragment newInstance() {
-        StoreCupboardIngredientFragment fragment = new StoreCupboardIngredientFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +68,6 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_store_cupboard_ingredients, container, false);
         ButterKnife.bind(this, view);
-        this.inflater = inflater;
 
         ingredientList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         ingredientList.setAdapter(ingredientAdapter);

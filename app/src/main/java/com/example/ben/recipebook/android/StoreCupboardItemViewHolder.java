@@ -47,8 +47,4 @@ public class StoreCupboardItemViewHolder extends RecyclerView.ViewHolder impleme
         return false;
     }
 
-    public interface ClickListener {
-        public void onItemClicked(int position);
-        public boolean onItemLongClicked(int position);
-    }
 }
