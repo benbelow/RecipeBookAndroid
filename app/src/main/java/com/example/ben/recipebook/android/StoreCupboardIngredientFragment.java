@@ -150,8 +150,6 @@ public class StoreCupboardIngredientFragment extends Fragment implements Saveabl
         dialog.show();
     }
 
-
-
     @Override
     public void save() {
 

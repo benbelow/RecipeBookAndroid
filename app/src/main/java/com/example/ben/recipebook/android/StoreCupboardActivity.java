@@ -49,7 +49,8 @@ public class StoreCupboardActivity extends ActionBarActivity {
                     StoreCupboardIngredientFragment ingredientFragment = (StoreCupboardIngredientFragment) viewPagerAdapter.getItem(viewPager.getCurrentItem());
                     ingredientFragment.showNewIngredientDialog();
                 } else {
-                    Toast.makeText(getApplication(), "Adding Equipment", Toast.LENGTH_LONG).show();
+                    StoreCupboardEquipmentFragment equipmentFragment = (StoreCupboardEquipmentFragment) viewPagerAdapter.getItem(viewPager.getCurrentItem());
+                    equipmentFragment.showNewEquipmentDialog();
                 }
             }
         });
